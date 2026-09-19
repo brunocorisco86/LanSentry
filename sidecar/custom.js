@@ -1,35 +1,39 @@
 // LanSentry UI Enhancement
-// Injeta dinamicamente a coluna e o toggle de bloqueio na tabela inicial e na tela de detalhes do host,
-// além de exibir e permitir a alteração do Grupo do Pi-hole em tempo real.
+// Injeta dinamicamente a coluna de Grupo do Pi-hole e Toggle de Bloqueio com proteção contra loops de mutação
 
 (function() {
-  console.log("🛡️ LanSentry UI Enhancement carregado com suporte a Grupos do Pi-hole!");
+  console.log("🛡️ LanSentry UI Enhancement ativo!");
 
-  // Injeta estilos CSS
-  const style = document.createElement('style');
-  style.innerHTML = `
-    .lansentry-block-toggle:checked {
-      background-color: #dc3545 !important;
-      border-color: #dc3545 !important;
-    }
-    .lansentry-blocked-row {
-      background-color: rgba(220, 53, 69, 0.15) !important;
-    }
-    .lansentry-block-badge {
-      font-size: 0.8rem;
-      padding: 0.25rem 0.5rem;
-    }
-    .lansentry-pihole-badge {
-      font-size: 0.78rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    }
-  `;
-  document.head.appendChild(style);
+  // Injeta estilos CSS uma única vez
+  if (!document.getElementById('lansentry-styles')) {
+    const style = document.createElement('style');
+    style.id = 'lansentry-styles';
+    style.innerHTML = `
+      .lansentry-block-toggle:checked {
+        background-color: #dc3545 !important;
+        border-color: #dc3545 !important;
+      }
+      .lansentry-blocked-row {
+        background-color: rgba(220, 53, 69, 0.15) !important;
+      }
+      .lansentry-block-badge {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+      }
+      .lansentry-pihole-badge {
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+    `;
+    document.head.appendChild(style);
+  }
 
   let piholeData = { groups: [], clients: {} };
   let deviceMap = {};
   let isFetching = false;
+  let isEnhancing = false;
 
   async function loadData() {
     if (isFetching) return;
@@ -57,9 +61,8 @@
     }
   }
 
-  // Carrega inicialmente e a cada 15 segundos
   loadData();
-  setInterval(loadData, 15000);
+  setInterval(loadData, 10000);
 
   function getGroupBadge(groupName) {
     const name = groupName || 'Default';
@@ -155,7 +158,7 @@
 
     const rows = document.querySelectorAll('table tbody tr');
     rows.forEach(tr => {
-      // Ignora se for tabela da página de host (que tem ID na primeira coluna)
+      // Ignora se for a tabela da tela de detalhes (/host/:id)
       if (tr.children[0] && tr.children[0].textContent.trim() === 'ID') return;
 
       const hostId = getHostIdFromRow(tr);
@@ -165,43 +168,43 @@
       const mac = dev && dev.Mac ? dev.Mac.toUpperCase().trim() : '';
       const ip = dev && dev.IP ? dev.IP.trim() : '';
 
-      const nameCell = tr.children[1];
-      const isBlocked = nameCell && nameCell.textContent.includes('[BLOCK]');
+      // Descobre se o nome contém [BLOCK]
+      const nameInputOrText = tr.querySelector('input[type="text"]') || tr.children[2] || tr.children[1];
+      const nameText = nameInputOrText ? (nameInputOrText.value || nameInputOrText.textContent || '') : '';
+      const isBlocked = nameText.includes('[BLOCK]');
 
       if (isBlocked) {
         tr.classList.add('lansentry-blocked-row');
+      } else {
+        tr.classList.remove('lansentry-blocked-row');
       }
 
-      // Injeta célula de Grupo Pi-hole
-      if (!tr.querySelector('.lansentry-td-group')) {
-        let groupName = 'Default';
-        if (piholeData && piholeData.clients) {
-          const clientInfo = piholeData.clients[mac] || (ip ? piholeData.clients[ip.toUpperCase()] : null);
-          if (clientInfo) {
-            groupName = clientInfo.primary_group_name || 'Default';
-          }
+      // Descobre o grupo do Pi-hole
+      let groupName = 'Default';
+      if (piholeData && piholeData.clients) {
+        const clientInfo = (mac ? piholeData.clients[mac] : null) || (ip ? piholeData.clients[ip.toUpperCase()] : null);
+        if (clientInfo) {
+          groupName = clientInfo.primary_group_name || 'Default';
         }
+      }
 
-        const tdGroup = document.createElement('td');
+      // Atualiza ou insere td de Grupo Pi-hole
+      let tdGroup = tr.querySelector('.lansentry-td-group');
+      if (!tdGroup) {
+        tdGroup = document.createElement('td');
         tdGroup.className = 'lansentry-td-group';
+        tdGroup.dataset.group = groupName;
         tdGroup.innerHTML = getGroupBadge(groupName);
         tr.appendChild(tdGroup);
-      } else {
-        // Atualiza badge se os dados mudaram
-        const tdGroup = tr.querySelector('.lansentry-td-group');
-        let groupName = 'Default';
-        if (piholeData && piholeData.clients) {
-          const clientInfo = piholeData.clients[mac] || (ip ? piholeData.clients[ip.toUpperCase()] : null);
-          if (clientInfo) {
-            groupName = clientInfo.primary_group_name || 'Default';
-          }
-        }
+      } else if (tdGroup.dataset.group !== groupName) {
+        tdGroup.dataset.group = groupName;
         tdGroup.innerHTML = getGroupBadge(groupName);
       }
 
-      // Injeta célula de Toggle de Bloqueio
-      if (!tr.querySelector('.lansentry-td-block')) {
-        const tdBlock = document.createElement('td');
+      // Atualiza ou insere td de Toggle de Bloqueio
+      let tdBlock = tr.querySelector('.lansentry-td-block');
+      if (!tdBlock) {
+        tdBlock = document.createElement('td');
         tdBlock.className = 'lansentry-td-block';
         tdBlock.innerHTML = `
           <div class="form-check form-switch" title="${isBlocked ? 'Dispositivo Bloqueado no Pi-hole' : 'Clique para Bloquear no Pi-hole'}">
@@ -215,6 +218,11 @@
         });
 
         tr.appendChild(tdBlock);
+      } else {
+        const switchInput = tdBlock.querySelector('input');
+        if (switchInput && switchInput.checked !== isBlocked) {
+          switchInput.checked = isBlocked;
+        }
       }
     });
   }
@@ -239,11 +247,11 @@
     const knownRow = rows.find(r => r.children[0] && r.children[0].textContent.trim() === 'Known');
     const targetRow = knownRow || idRow;
 
-    // Injeta Seletor de Grupo do Pi-hole
+    // Seletor de Grupo do Pi-hole
     if (!document.querySelector('.lansentry-hostpage-group-row')) {
       let currentGroupId = 0;
       if (piholeData && piholeData.clients) {
-        const clientInfo = piholeData.clients[mac] || (ip ? piholeData.clients[ip.toUpperCase()] : null);
+        const clientInfo = (mac ? piholeData.clients[mac] : null) || (ip ? piholeData.clients[ip.toUpperCase()] : null);
         if (clientInfo) {
           currentGroupId = clientInfo.primary_group_id || 0;
         }
@@ -305,7 +313,7 @@
       targetRow.parentNode.insertBefore(groupTr, targetRow.nextSibling);
     }
 
-    // Injeta Linha de Bloqueio no Host Page
+    // Toggle de Bloqueio na Tela do Host
     if (!document.querySelector('.lansentry-hostpage-block-row')) {
       const blockTr = document.createElement('tr');
       blockTr.className = 'lansentry-hostpage-block-row';
@@ -339,14 +347,18 @@
   }
 
   function runEnhancements() {
-    enhanceTable();
-    enhanceHostPage();
+    if (isEnhancing) return;
+    isEnhancing = true;
+    try {
+      enhanceTable();
+      enhanceHostPage();
+    } catch (err) {
+      console.warn("Aviso render LanSentry:", err);
+    } finally {
+      isEnhancing = false;
+    }
   }
 
-  const observer = new MutationObserver(() => {
-    runEnhancements();
-  });
-
-  observer.observe(document.body, { childList: true, subtree: true });
-  setInterval(runEnhancements, 800);
+  // Executa periodicamente a cada 1 segundo (leve e seguro, sem loops de mutação)
+  setInterval(runEnhancements, 1000);
 })();

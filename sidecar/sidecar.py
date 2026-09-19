@@ -723,28 +723,29 @@ class LanSentryProxyHandler(BaseHTTPRequestHandler):
             self.wfile.write(payload)
             return
 
-        if path == "/" or path == "":
-            try:
-                resp = requests.get(f"{WYL_TARGET}/", timeout=5.0)
-                html = resp.text
-                if "</body>" in html:
-                    html = html.replace("</body>", '<script src="/custom.js" defer></script></body>')
-                elif "</head>" in html:
-                    html = html.replace("</head>", '<script src="/custom.js" defer></script></head>')
-                encoded = html.encode("utf-8")
-                self.send_response(resp.status_code)
-                self.send_header("Content-Type", "text/html; charset=utf-8")
-                self.send_header("Content-Length", str(len(encoded)))
-                self.end_headers()
-                self.wfile.write(encoded)
-                return
-            except Exception as e:
-                self.send_error(502, f"Erro ao contatar WatchYourLAN: {e}")
-                return
-
         target_url = f"{WYL_TARGET}{self.path}"
         try:
             resp = requests.get(target_url, timeout=10.0, headers={k: v for k, v in self.headers.items() if k.lower() != "host"})
+            content_type = resp.headers.get("Content-Type", "")
+
+            # Injeta custom.js em qualquer página HTML servida (seja /, /host/:id, /config, etc.)
+            if "text/html" in content_type:
+                html = resp.text
+                if "/custom.js" not in html:
+                    if "</body>" in html:
+                        html = html.replace("</body>", '<script src="/custom.js" defer></script></body>')
+                    elif "</head>" in html:
+                        html = html.replace("</head>", '<script src="/custom.js" defer></script></head>')
+                body_bytes = html.encode("utf-8")
+                self.send_response(resp.status_code)
+                for k, v in resp.headers.items():
+                    if k.lower() not in ["content-encoding", "transfer-encoding", "content-length"]:
+                        self.send_header(k, v)
+                self.send_header("Content-Length", str(len(body_bytes)))
+                self.end_headers()
+                self.wfile.write(body_bytes)
+                return
+
             self.send_response(resp.status_code)
             for k, v in resp.headers.items():
                 if k.lower() not in ["content-encoding", "transfer-encoding", "content-length"]:
