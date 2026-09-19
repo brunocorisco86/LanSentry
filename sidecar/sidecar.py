@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-LanSentry Sidecar & Auto-Enricher
+LanSentry Sidecar, Proxy & Auto-Enricher
+- Proxy transparente com injeção do Toggle de Bloqueio no Frontend.
 - Sincroniza dispositivos marcados para bloqueio com o Pi-hole (gravity.db).
-- Envia notificações ntfy (bruno-casa-dallas).
+- Envia notificações ntfy com link direto para o ID do aparelho (bruno-casa-dallas).
 - Enriquece automaticamente fabricantes desconhecidos via api.macvendors.com.
 - Gera nomes inteligentes para dispositivos sem identificação consultando DNS (Unbound/Pi-hole).
 """
@@ -10,11 +11,15 @@ LanSentry Sidecar & Auto-Enricher
 import os
 import sys
 import time
+import json
 import logging
 import sqlite3
+import threading
+import urllib.parse
 import requests
 import psycopg2
 from psycopg2.extras import DictCursor
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 
 try:
     import dns.resolver
@@ -30,27 +35,38 @@ logging.basicConfig(
 )
 logger = logging.getLogger("lansentry-sidecar")
 
-PG_CONNECT = os.getenv("PG_CONNECT", "postgres://lansentry:lansentry_pass_mude_aqui@127.0.0.1:5432/lansentry?sslmode=disable")
+PG_CONNECT = os.getenv("PG_CONNECT", "postgres://lansentry:lansentry_pass_mude_aqui@127.0.0.1:5434/lansentry?sslmode=disable")
 PIHOLE_DB_PATH = os.getenv("PIHOLE_GRAVITY_DB", "/etc/pihole/gravity.db")
 CHECK_INTERVAL = int(os.getenv("CHECK_INTERVAL_SECONDS", "30"))
 BLOCK_GROUP_NAME = "LANSENTRY_BLOCKED"
 NTFY_TOPIC = os.getenv("NTFY_TOPIC", "bruno-casa-dallas")
 DNS_SERVER = os.getenv("DNS_SERVER", "192.168.1.7")
+SERVER_HOST = os.getenv("SERVER_HOST", "192.168.1.7")
 
-# Cache em memória para evitar requisições repetidas de MAC
+PROXY_PORT = int(os.getenv("PROXY_PORT", "8840"))
+WYL_TARGET = os.getenv("WYL_TARGET", "http://127.0.0.1:8841")
+
 MAC_VENDOR_CACHE = {}
 
 
-def send_ntfy_message(text, title="LanSentry 🛡️", priority="3", tags="shield"):
-    """Envia notificação via ntfy.sh seguindo padrão do homelab."""
+def send_ntfy_message(text, title="LanSentry 🛡️", priority="3", tags="shield", device_id=None):
+    """Envia notificação via ntfy.sh seguindo padrão do homelab com link direto por ID."""
     if not NTFY_TOPIC:
         return
     try:
         clean_text = text.replace("*", "").replace("`", "")
+        clean_title = title.encode("ascii", "ignore").decode("ascii").strip()
+        headers = {"Title": clean_title, "Priority": str(priority), "Tags": tags}
+
+        if device_id:
+            host_url = f"http://{SERVER_HOST}:8840/#/host/{device_id}"
+            headers["Click"] = host_url
+            headers["Actions"] = f"view, Editar no LanSentry, {host_url}"
+
         requests.post(
             f"https://ntfy.sh/{NTFY_TOPIC}",
             data=clean_text.encode("utf-8"),
-            headers={"Title": title, "Priority": str(priority), "Tags": tags},
+            headers=headers,
             timeout=3.0,
         )
     except Exception as e:
@@ -80,7 +96,6 @@ def lookup_mac_vendor_api(mac):
         logger.info(f"🔍 Consultando API macvendors para MAC: {mac_clean}...")
         url = f"https://api.macvendors.com/{mac_clean}"
         resp = requests.get(url, timeout=4.0)
-        # Respeita o rate-limit da API gratuita (1 req/s)
         time.sleep(1.2)
         if resp.status_code == 200:
             vendor = resp.text.strip()
@@ -177,21 +192,18 @@ def enrich_devices():
 
                 updated = False
 
-                # 1. Se HW for Unknown, tenta resolver via API
                 if not hw or hw == "(Unknown)":
                     new_hw = lookup_mac_vendor_api(mac)
                     if new_hw and new_hw != "(Desconhecido)":
                         hw = new_hw
                         updated = True
 
-                # 2. Se DNS for vazio, tenta consulta reversa no Unbound/Pi-hole
                 if not dns_name:
                     rev_dns = lookup_reverse_dns(ip)
                     if rev_dns:
                         dns_name = rev_dns
                         updated = True
 
-                # 3. Se NAME estiver vazio, gera nome inteligente
                 if not name or name.strip() == "":
                     name = suggest_device_name(dns_name, hw, ip)
                     updated = True
@@ -287,7 +299,7 @@ def sync_blocks():
 
             table_name = tables[0]
             cur.execute(f"""
-                SELECT "MAC" AS mac, "IP" AS ip, "NAME" AS name 
+                SELECT "ID" AS id, "MAC" AS mac, "IP" AS ip, "NAME" AS name 
                 FROM "{table_name}"
                 WHERE UPPER("NAME") LIKE '%BLOCK%' OR UPPER("NAME") LIKE '%[BLOCK]%';
             """)
@@ -312,7 +324,7 @@ def sync_blocks():
                             logger.info(f" - MAC: {dev['mac']} | IP: {dev['ip']} | Nome: {dev['name']}")
                     pi_conn.close()
                     return
-            except sqlite3.Error as e:
+            except sqlite3.Error:
                 if blocked_devices:
                     logger.info(f"[DEV MODE] {len(blocked_devices)} dispositivo(s) marcados com [BLOCK] (simulação):")
                     for dev in blocked_devices:
@@ -339,12 +351,6 @@ def sync_blocks():
                     )
                     client_id = pi_cur.lastrowid
                     logger.info(f"🚫 Adicionando cliente no Pi-hole: MAC {mac} ({name})")
-                    send_ntfy_message(
-                        f"Aparelho isolado da rede:\nNome: {name}\nIP: {dev['ip']}\nMAC: {mac}",
-                        title="LanSentry: Acesso Revogado 🚫",
-                        priority="4",
-                        tags="no_entry,shield",
-                    )
                 else:
                     client_id = c_row[0]
 
@@ -363,12 +369,165 @@ def sync_blocks():
             pg_conn.close()
 
 
+def handle_block_toggle(dev_id, will_block):
+    """Atualiza o nome no banco com ou sem a tag [BLOCK], roda sync_blocks imediatamente e notifica."""
+    pg_conn = None
+    try:
+        pg_conn = get_pg_connection()
+        with pg_conn.cursor(cursor_factory=DictCursor) as cur:
+            cur.execute('SELECT "ID", "IP", "MAC", "NAME" FROM "now" WHERE "ID" = %s;', (dev_id,))
+            dev = cur.fetchone()
+            if not dev:
+                return False, "Dispositivo não encontrado"
+
+            current_name = dev["NAME"] or ""
+            mac = dev["MAC"]
+            ip = dev["IP"]
+
+            if will_block:
+                if "[BLOCK]" not in current_name:
+                    new_name = f"[BLOCK] {current_name}".strip()
+                else:
+                    new_name = current_name
+            else:
+                new_name = current_name.replace("[BLOCK]", "").strip()
+
+            cur.execute('UPDATE "now" SET "NAME" = %s WHERE "ID" = %s;', (new_name, dev_id))
+            pg_conn.commit()
+
+        sync_blocks()
+
+        if will_block:
+            send_ntfy_message(
+                f"Dispositivo bloqueado na rede!\nNome: {new_name}\nIP: {ip}\nMAC: {mac}",
+                title="LanSentry: Acesso Revogado 🚫",
+                priority="4",
+                tags="no_entry,shield",
+                device_id=dev_id,
+            )
+        else:
+            send_ntfy_message(
+                f"Dispositivo liberado para navegar:\nNome: {new_name}\nIP: {ip}\nMAC: {mac}",
+                title="LanSentry: Acesso Restaurado ✅",
+                priority="3",
+                tags="white_check_mark,shield",
+                device_id=dev_id,
+            )
+
+        return True, None
+    except Exception as e:
+        logger.error(f"Erro em handle_block_toggle: {e}")
+        return False, str(e)
+    finally:
+        if pg_conn:
+            pg_conn.close()
+
+
+class LanSentryProxyHandler(BaseHTTPRequestHandler):
+    def log_message(self, format, *args):
+        pass  # Silencia logs comuns de requisições web
+
+    def do_GET(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+
+        if path == "/custom.js":
+            try:
+                with open("/app/custom.js", "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", "application/javascript; charset=utf-8")
+                self.send_header("Content-Length", str(len(content)))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+            except Exception as e:
+                self.send_error(500, str(e))
+                return
+
+        if path == "/" or path == "":
+            try:
+                resp = requests.get(f"{WYL_TARGET}/", timeout=5.0)
+                html = resp.text
+                if "</body>" in html:
+                    html = html.replace("</body>", '<script src="/custom.js" defer></script></body>')
+                elif "</head>" in html:
+                    html = html.replace("</head>", '<script src="/custom.js" defer></script></head>')
+                encoded = html.encode("utf-8")
+                self.send_response(resp.status_code)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Content-Length", str(len(encoded)))
+                self.end_headers()
+                self.wfile.write(encoded)
+                return
+            except Exception as e:
+                self.send_error(502, f"Erro ao contatar WatchYourLAN: {e}")
+                return
+
+        target_url = f"{WYL_TARGET}{self.path}"
+        try:
+            resp = requests.get(target_url, timeout=10.0, headers={k: v for k, v in self.headers.items() if k.lower() != "host"})
+            self.send_response(resp.status_code)
+            for k, v in resp.headers.items():
+                if k.lower() not in ["content-encoding", "transfer-encoding", "content-length"]:
+                    self.send_header(k, v)
+            self.send_header("Content-Length", str(len(resp.content)))
+            self.end_headers()
+            self.wfile.write(resp.content)
+        except Exception as e:
+            self.send_error(502, f"Proxy error: {e}")
+
+    def do_POST(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+
+        if path.startswith("/api/block_toggle/"):
+            parts = path.strip("/").split("/")
+            if len(parts) >= 4:
+                dev_id = parts[2]
+                status = parts[3]
+                success, err = handle_block_toggle(dev_id, status == "1")
+                res_body = json.dumps({"success": success, "error": err}).encode("utf-8")
+                self.send_response(200 if success else 400)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(res_body)))
+                self.end_headers()
+                self.wfile.write(res_body)
+                return
+
+        content_length = int(self.headers.get("Content-Length", 0))
+        post_data = self.rfile.read(content_length) if content_length > 0 else None
+        target_url = f"{WYL_TARGET}{self.path}"
+        try:
+            resp = requests.post(target_url, data=post_data, timeout=10.0, headers={k: v for k, v in self.headers.items() if k.lower() != "host"})
+            self.send_response(resp.status_code)
+            for k, v in resp.headers.items():
+                if k.lower() not in ["content-encoding", "transfer-encoding", "content-length"]:
+                    self.send_header(k, v)
+            self.send_header("Content-Length", str(len(resp.content)))
+            self.end_headers()
+            self.wfile.write(resp.content)
+        except Exception as e:
+            self.send_error(502, f"Proxy error: {e}")
+
+
+def run_proxy():
+    server_address = ("0.0.0.0", PROXY_PORT)
+    httpd = ThreadingHTTPServer(server_address, LanSentryProxyHandler)
+    logger.info(f"🌐 LanSentry Web Proxy ativo em http://0.0.0.0:{PROXY_PORT} (repassando para {WYL_TARGET})")
+    httpd.serve_forever()
+
+
 def main():
-    logger.info("Iniciando LanSentry Sidecar & Auto-Enricher...")
+    logger.info("Iniciando LanSentry Sidecar, Proxy & Auto-Enricher...")
     logger.info(f"Filtro DNS Server: {DNS_SERVER}")
     logger.info(f"Tópico ntfy: {NTFY_TOPIC}")
-    logger.info(f"Intervalo de checagem: {CHECK_INTERVAL}s")
+    logger.info(f"Host base ntfy links: {SERVER_HOST}")
     init_pihole_group()
+
+    # Inicia proxy HTTP em thread separada
+    proxy_t = threading.Thread(target=run_proxy, daemon=True)
+    proxy_t.start()
 
     while True:
         try:
