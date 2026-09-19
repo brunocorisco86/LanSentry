@@ -10,7 +10,7 @@ services:
       TZ: ${TZ:-America/Sao_Paulo}
     ports:
       # Exposto apenas em localhost para segurança, permitindo acesso do WYL em host-mode
-      - "127.0.0.1:5432:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-5434}:5432"
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     healthcheck:
@@ -29,7 +29,7 @@ services:
       IFACES: ${IFACES:-eth0}
       PORT: ${WYL_PORT:-8840}
       USE_DB: "postgres"
-      PG_CONNECT: "postgres://${POSTGRES_USER:-lansentry}:${POSTGRES_PASSWORD:-lansentry_pass_mude_aqui}@127.0.0.1:5432/${POSTGRES_DB:-lansentry}?sslmode=disable"
+      PG_CONNECT: "postgres://${POSTGRES_USER:-lansentry}:${POSTGRES_PASSWORD:-lansentry_pass_mude_aqui}@127.0.0.1:${POSTGRES_PORT:-5434}/${POSTGRES_DB:-lansentry}?sslmode=disable"
     volumes:
       - ./data/wyl:/data/WatchYourLAN
     depends_on:
@@ -45,7 +45,7 @@ services:
     network_mode: "host"
     environment:
       TZ: ${TZ:-America/Sao_Paulo}
-      PG_CONNECT: "postgres://${POSTGRES_USER:-lansentry}:${POSTGRES_PASSWORD:-lansentry_pass_mude_aqui}@127.0.0.1:5432/${POSTGRES_DB:-lansentry}?sslmode=disable"
+      PG_CONNECT: "postgres://${POSTGRES_USER:-lansentry}:${POSTGRES_PASSWORD:-lansentry_pass_mude_aqui}@127.0.0.1:${POSTGRES_PORT:-5434}/${POSTGRES_DB:-lansentry}?sslmode=disable"
       PIHOLE_GRAVITY_DB: "/etc/pihole/gravity.db"
       CHECK_INTERVAL_SECONDS: ${CHECK_INTERVAL_SECONDS:-60}
     volumes:
