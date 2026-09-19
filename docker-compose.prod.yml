@@ -21,10 +21,12 @@ services:
     container_name: lansentry-sidecar
     restart: unless-stopped
     network_mode: "host"
+    pid: "host"
     environment:
       TZ: ${TZ:-America/Sao_Paulo}
       PG_CONNECT: "postgres://${POSTGRES_USER:-lansentry}:${POSTGRES_PASSWORD:-lansentry_secure_prod_pi}@127.0.0.1:5432/${POSTGRES_DB:-lansentry}?sslmode=disable"
       PIHOLE_GRAVITY_DB: "/etc/pihole/gravity.db"
+      PIHOLE_FTL_DB: "/etc/pihole/pihole-FTL.db"
       CHECK_INTERVAL_SECONDS: ${CHECK_INTERVAL_SECONDS:-30}
       NTFY_TOPIC: ${NTFY_TOPIC:-bruno-casa-dallas}
       DNS_SERVER: ${DNS_SERVER:-127.0.0.1}
@@ -34,4 +36,4 @@ services:
     volumes:
       - ./sidecar/sidecar.py:/app/sidecar.py:ro
       - ./sidecar/custom.js:/app/custom.js:ro
-      - /etc/pihole/gravity.db:/etc/pihole/gravity.db
+      - /etc/pihole:/etc/pihole
