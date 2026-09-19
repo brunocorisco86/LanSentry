@@ -30,6 +30,7 @@ services:
       PORT: ${WYL_PORT:-8840}
       USE_DB: "postgres"
       PG_CONNECT: "postgres://${POSTGRES_USER:-lansentry}:${POSTGRES_PASSWORD:-lansentry_pass_mude_aqui}@127.0.0.1:${POSTGRES_PORT:-5434}/${POSTGRES_DB:-lansentry}?sslmode=disable"
+      SHOUTRRR_URL: ${SHOUTRRR_URL:-ntfy://ntfy.sh/bruno-casa-dallas}
     volumes:
       - ./data/wyl:/data/WatchYourLAN
     depends_on:
@@ -47,10 +48,14 @@ services:
       TZ: ${TZ:-America/Sao_Paulo}
       PG_CONNECT: "postgres://${POSTGRES_USER:-lansentry}:${POSTGRES_PASSWORD:-lansentry_pass_mude_aqui}@127.0.0.1:${POSTGRES_PORT:-5434}/${POSTGRES_DB:-lansentry}?sslmode=disable"
       PIHOLE_GRAVITY_DB: "/etc/pihole/gravity.db"
-      CHECK_INTERVAL_SECONDS: ${CHECK_INTERVAL_SECONDS:-60}
+      CHECK_INTERVAL_SECONDS: ${CHECK_INTERVAL_SECONDS:-30}
+      NTFY_TOPIC: ${NTFY_TOPIC:-bruno-casa-dallas}
+      DNS_SERVER: ${DNS_SERVER:-192.168.1.7}
     volumes:
-      # Monta o banco SQLite de gravidade do Pi-hole para bloqueio de clientes
+      # Monta o script diretamente para hot-reload e o banco do Pi-hole
+      - ./sidecar/sidecar.py:/app/sidecar.py:ro
       - ${PIHOLE_GRAVITY_DB:-/etc/pihole/gravity.db}:/etc/pihole/gravity.db
     depends_on:
       lansentry-postgres:
         condition: service_healthy
+
