@@ -45,6 +45,13 @@ def init_pihole_group():
         conn = sqlite3.connect(PIHOLE_DB_PATH)
         cursor = conn.cursor()
 
+        # Verifica se o banco sqlite possui a estrutura do Pi-hole (tabela 'group')
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='group';")
+        if not cursor.fetchone():
+            logger.info(f"[DEV MODE] Tabela 'group' não encontrada em {PIHOLE_DB_PATH}. Operando em modo de simulação.")
+            conn.close()
+            return False
+
         # 1. Garante o grupo no Pi-hole
         cursor.execute("SELECT id FROM 'group' WHERE name = ?", (BLOCK_GROUP_NAME,))
         row = cursor.fetchone()
@@ -104,11 +111,11 @@ def sync_blocks():
                 return
 
             table_name = tables[0]
-            # Seleciona dispositivos com [BLOCK] no nome
+            # Seleciona dispositivos com [BLOCK] no nome (colunas GORM em maiúsculo)
             cur.execute(f"""
-                SELECT mac, ip, name 
+                SELECT "MAC" AS mac, "IP" AS ip, "NAME" AS name 
                 FROM "{table_name}"
-                WHERE UPPER(name) LIKE '%BLOCK%' OR UPPER(name) LIKE '%[BLOCK]%';
+                WHERE UPPER("NAME") LIKE '%BLOCK%' OR UPPER("NAME") LIKE '%[BLOCK]%';
             """)
             blocked_devices = cur.fetchall()
 
@@ -122,6 +129,16 @@ def sync_blocks():
             # Sincronização real com gravity.db do Pi-hole
             pi_conn = sqlite3.connect(PIHOLE_DB_PATH)
             pi_cur = pi_conn.cursor()
+
+            # Checa se a tabela group existe
+            pi_cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='group';")
+            if not pi_cur.fetchone():
+                if blocked_devices:
+                    logger.info(f"[DEV MODE] {len(blocked_devices)} dispositivo(s) marcados para bloqueio (simulação):")
+                    for dev in blocked_devices:
+                        logger.info(f" - MAC: {dev['mac']} | IP: {dev['ip']} | Nome: {dev['name']}")
+                pi_conn.close()
+                return
 
             # Pega ID do grupo de bloqueio
             pi_cur.execute("SELECT id FROM 'group' WHERE name = ?", (BLOCK_GROUP_NAME,))
