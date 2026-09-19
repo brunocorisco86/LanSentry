@@ -1,0 +1,20 @@
+{
+  "scripts/backup_lansentry.sh": {
+    "mtime": 1789851918.856755,
+    "seen": 1789854955.8485317,
+    "ast_hash": "2e5ddcb09808d1f937bfc6f4403129b4",
+    "semantic_hash": "2e5ddcb09808d1f937bfc6f4403129b4"
+  },
+  "sidecar/custom.js": {
+    "mtime": 1789854569.2370427,
+    "seen": 1789854955.848535,
+    "ast_hash": "1054600d1ac157a6085b8d9ede549ddb",
+    "semantic_hash": "1054600d1ac157a6085b8d9ede549ddb"
+  },
+  "sidecar/sidecar.py": {
+    "mtime": 1789853816.213975,
+    "seen": 1789854955.8485365,
+    "ast_hash": "2f82f4d2d04e02887462fdb8e1e33e1c",
+    "semantic_hash": "2f82f4d2d04e02887462fdb8e1e33e1c"
+  }
+}

@@ -12,3 +12,6 @@ sidecar/__pycache__/
 # Logs
 *.log
 logs/
+
+# Graphify cache
+graphify-out/cache/

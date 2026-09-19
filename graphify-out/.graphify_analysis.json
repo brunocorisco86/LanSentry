@@ -1,0 +1,220 @@
+{
+  "communities": {
+    "0": [
+      "sidecar_custom",
+      "sidecar_custom_enhancehostpage",
+      "sidecar_custom_enhancetable",
+      "sidecar_custom_getgroupbadge",
+      "sidecar_custom_gethostidfromrow",
+      "sidecar_custom_loaddata",
+      "sidecar_custom_runenhancements",
+      "sidecar_custom_toggleblock"
+    ],
+    "1": [
+      "sidecar_sidecar",
+      "sidecar_sidecar_get_pihole_client_groups",
+      "sidecar_sidecar_init_pihole_group",
+      "sidecar_sidecar_main",
+      "sidecar_sidecar_rationale_184",
+      "sidecar_sidecar_rationale_261",
+      "sidecar_sidecar_run_proxy"
+    ],
+    "2": [
+      "basehttprequesthandler",
+      "sidecar_sidecar_get_pihole_groups",
+      "sidecar_sidecar_lansentryproxyhandler",
+      "sidecar_sidecar_lansentryproxyhandler_do_get",
+      "sidecar_sidecar_lansentryproxyhandler_log_message",
+      "sidecar_sidecar_rationale_237"
+    ],
+    "3": [
+      "sidecar_sidecar_auto_classify_devices",
+      "sidecar_sidecar_rationale_422",
+      "sidecar_sidecar_rationale_70",
+      "sidecar_sidecar_send_ntfy_message"
+    ],
+    "4": [
+      "sidecar_sidecar_enrich_devices",
+      "sidecar_sidecar_lookup_reverse_dns",
+      "sidecar_sidecar_rationale_132",
+      "sidecar_sidecar_rationale_485"
+    ],
+    "5": [
+      "sidecar_sidecar_get_pg_connection",
+      "sidecar_sidecar_handle_block_toggle",
+      "sidecar_sidecar_lansentryproxyhandler_do_post",
+      "sidecar_sidecar_rationale_616"
+    ],
+    "6": [
+      "sidecar_sidecar_rationale_306",
+      "sidecar_sidecar_rationale_58",
+      "sidecar_sidecar_reload_pihole_lists",
+      "sidecar_sidecar_set_pihole_device_group"
+    ],
+    "7": [
+      "scripts_backup_lansentry",
+      "scripts_backup_lansentry_sh__entry"
+    ],
+    "8": [
+      "sidecar_sidecar_lookup_mac_vendor_api",
+      "sidecar_sidecar_rationale_104"
+    ],
+    "9": [
+      "sidecar_sidecar_rationale_150",
+      "sidecar_sidecar_suggest_device_name"
+    ],
+    "10": [
+      "sidecar_sidecar_rationale_371",
+      "sidecar_sidecar_sync_names_to_pihole_ftl"
+    ],
+    "11": [
+      "sidecar_sidecar_rationale_549",
+      "sidecar_sidecar_sync_blocks"
+    ]
+  },
+  "cohesion": {
+    "0": 0.5357142857142857,
+    "1": 0.42857142857142855,
+    "2": 0.3333333333333333,
+    "3": 0.5,
+    "4": 0.5,
+    "5": 0.6666666666666666,
+    "6": 0.5,
+    "7": 1.0,
+    "8": 1.0,
+    "9": 1.0,
+    "10": 1.0,
+    "11": 1.0
+  },
+  "gods": [
+    {
+      "id": "sidecar_sidecar_main",
+      "label": "main()",
+      "degree": 8
+    },
+    {
+      "id": "sidecar_sidecar_enrich_devices",
+      "label": "enrich_devices()",
+      "degree": 7
+    },
+    {
+      "id": "sidecar_sidecar_get_pg_connection",
+      "label": "get_pg_connection()",
+      "degree": 7
+    },
+    {
+      "id": "sidecar_sidecar_handle_block_toggle",
+      "label": "handle_block_toggle()",
+      "degree": 7
+    },
+    {
+      "id": "sidecar_sidecar_sync_blocks",
+      "label": "sync_blocks()",
+      "degree": 6
+    },
+    {
+      "id": "sidecar_sidecar_auto_classify_devices",
+      "label": "auto_classify_devices()",
+      "degree": 6
+    },
+    {
+      "id": "sidecar_sidecar_lansentryproxyhandler",
+      "label": "LanSentryProxyHandler",
+      "degree": 5
+    },
+    {
+      "id": "sidecar_custom_enhancetable",
+      "label": "enhanceTable()",
+      "degree": 5
+    },
+    {
+      "id": "sidecar_sidecar_reload_pihole_lists",
+      "label": "reload_pihole_lists()",
+      "degree": 5
+    },
+    {
+      "id": "sidecar_sidecar_set_pihole_device_group",
+      "label": "set_pihole_device_group()",
+      "degree": 5
+    }
+  ],
+  "surprises": [
+    {
+      "source": "main()",
+      "target": "auto_classify_devices()",
+      "source_files": [
+        "sidecar/sidecar.py",
+        "sidecar/sidecar.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 1 → community 3"
+    },
+    {
+      "source": "main()",
+      "target": "enrich_devices()",
+      "source_files": [
+        "sidecar/sidecar.py",
+        "sidecar/sidecar.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 1 → community 4"
+    },
+    {
+      "source": "main()",
+      "target": "sync_blocks()",
+      "source_files": [
+        "sidecar/sidecar.py",
+        "sidecar/sidecar.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 1 → community 11"
+    },
+    {
+      "source": "main()",
+      "target": "sync_names_to_pihole_ftl()",
+      "source_files": [
+        "sidecar/sidecar.py",
+        "sidecar/sidecar.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 1 → community 10"
+    },
+    {
+      "source": "sync_names_to_pihole_ftl()",
+      "target": "get_pg_connection()",
+      "source_files": [
+        "sidecar/sidecar.py",
+        "sidecar/sidecar.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "note": "Bridges community 10 → community 5"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `LanSentryProxyHandler` connect `LanSentryProxyHandler` to `sidecar.py`, `get_pg_connection`?",
+      "why": "High betweenness centrality (0.080) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `enrich_devices()` connect `enrich_devices` to `lookup_mac_vendor_api`, `sidecar.py`, `get_pg_connection`, `suggest_device_name`?",
+      "why": "High betweenness centrality (0.047) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `handle_block_toggle()` connect `get_pg_connection` to `sync_blocks`, `sidecar.py`, `auto_classify_devices`, `reload_pihole_lists`?",
+      "why": "High betweenness centrality (0.046) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `backup_lansentry.sh script` to the rest of the system?",
+      "why": "1 weakly-connected nodes found - possible documentation gaps or missing edges."
+    }
+  ]
+}
