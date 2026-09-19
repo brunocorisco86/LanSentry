@@ -1,10 +1,10 @@
 // LanSentry UI Enhancement
-// Injeta dinamicamente a coluna e o toggle de bloqueio na tabela do WatchYourLAN
+// Injeta dinamicamente a coluna e o toggle de bloqueio na tabela inicial e na tela de detalhes do host
 
 (function() {
   console.log("🛡️ LanSentry UI Enhancement carregado!");
 
-  // Injeta estilos CSS para o toggle de perigo (vermelho)
+  // Injeta estilos CSS
   const style = document.createElement('style');
   style.innerHTML = `
     .lansentry-block-toggle:checked {
@@ -14,17 +14,14 @@
     .lansentry-blocked-row {
       background-color: rgba(220, 53, 69, 0.15) !important;
     }
-    .lansentry-badge {
-      font-size: 0.75rem;
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      font-weight: bold;
+    .lansentry-block-badge {
+      font-size: 0.8rem;
+      padding: 0.25rem 0.5rem;
     }
   `;
   document.head.appendChild(style);
 
   function getHostIdFromRow(tr) {
-    // Procura links como /host/12
     const links = tr.querySelectorAll('a[href*="/host/"]');
     for (const a of links) {
       const match = a.getAttribute('href').match(/\/host\/(\d+)/);
@@ -33,7 +30,7 @@
     return null;
   }
 
-  async function toggleBlock(id, willBlock, checkbox, tr) {
+  async function toggleBlock(id, willBlock, checkbox, tr, nameInput) {
     checkbox.disabled = true;
     try {
       const resp = await fetch(`/api/block_toggle/${id}/${willBlock ? '1' : '0'}`, {
@@ -41,10 +38,22 @@
       });
       const data = await resp.json();
       if (data.success) {
-        if (willBlock) {
-          tr.classList.add('lansentry-blocked-row');
-        } else {
-          tr.classList.remove('lansentry-blocked-row');
+        if (tr) {
+          if (willBlock) {
+            tr.classList.add('lansentry-blocked-row');
+          } else {
+            tr.classList.remove('lansentry-blocked-row');
+          }
+        }
+        if (nameInput) {
+          const currentVal = nameInput.value || '';
+          if (willBlock) {
+            if (!currentVal.includes('[BLOCK]')) {
+              nameInput.value = `[BLOCK] ${currentVal}`.trim();
+            }
+          } else {
+            nameInput.value = currentVal.replace('[BLOCK]', '').trim();
+          }
         }
       } else {
         alert("Falha ao atualizar bloqueio: " + (data.error || "erro desconhecido"));
@@ -58,11 +67,11 @@
     }
   }
 
+  // 1. Injeta coluna de bloqueio na tabela principal
   function enhanceTable() {
     const thead = document.querySelector('table thead tr');
     if (!thead) return;
 
-    // 1. Injeta cabeçalho "Bloquear" se ainda não existir
     if (!thead.querySelector('.lansentry-th-block')) {
       const th = document.createElement('th');
       th.className = 'lansentry-th-block';
@@ -71,9 +80,10 @@
       thead.appendChild(th);
     }
 
-    // 2. Injeta a coluna nas linhas do corpo da tabela
     const rows = document.querySelectorAll('table tbody tr');
     rows.forEach(tr => {
+      // Ignora se for tabela da página de host (que tem ID na primeira coluna)
+      if (tr.children[0] && tr.children[0].textContent.trim() === 'ID') return;
       if (tr.querySelector('.lansentry-td-block')) return;
 
       const hostId = getHostIdFromRow(tr);
@@ -96,18 +106,72 @@
 
       const switchInput = td.querySelector('input');
       switchInput.addEventListener('change', (e) => {
-        toggleBlock(hostId, e.target.checked, switchInput, tr);
+        toggleBlock(hostId, e.target.checked, switchInput, tr, null);
       });
 
       tr.appendChild(td);
     });
   }
 
-  // Monitora alterações no DOM para renderizar mesmo com navegação SPA
-  const observer = new MutationObserver(() => {
+  // 2. Injeta linha de bloqueio na tela de detalhes do host (/host/:id)
+  function enhanceHostPage() {
+    // Procura a linha com ID
+    const rows = Array.from(document.querySelectorAll('table tbody tr'));
+    const idRow = rows.find(r => r.children[0] && r.children[0].textContent.trim() === 'ID');
+    if (!idRow) return;
+
+    // Se já foi injetado nesta tabela, não repete
+    if (document.querySelector('.lansentry-hostpage-block-row')) return;
+
+    const hostId = idRow.children[1] ? idRow.children[1].textContent.trim() : null;
+    if (!hostId) return;
+
+    const nameRow = rows.find(r => r.children[0] && r.children[0].textContent.trim() === 'Name');
+    const nameInput = nameRow ? nameRow.querySelector('input') : null;
+    const isBlocked = nameInput ? nameInput.value.includes('[BLOCK]') : false;
+
+    // Procura a linha do Known para inserir logo após
+    const knownRow = rows.find(r => r.children[0] && r.children[0].textContent.trim() === 'Known');
+    const targetRow = knownRow || idRow;
+
+    const newTr = document.createElement('tr');
+    newTr.className = 'lansentry-hostpage-block-row';
+    newTr.innerHTML = `
+      <td><strong>Bloquear no Pi-hole</strong></td>
+      <td>
+        <div class="form-check form-switch d-flex align-items-center">
+          <input class="form-check-input lansentry-block-toggle" type="checkbox" ${isBlocked ? 'checked' : ''} style="cursor: pointer;">
+          <span class="ms-2 badge bg-danger ${isBlocked ? '' : 'd-none'} lansentry-block-badge">🚫 Acesso Revogado</span>
+        </div>
+      </td>
+    `;
+
+    const switchInput = newTr.querySelector('input');
+    const badge = newTr.querySelector('.lansentry-block-badge');
+
+    switchInput.addEventListener('change', (e) => {
+      const willBlock = e.target.checked;
+      toggleBlock(hostId, willBlock, switchInput, null, nameInput);
+      if (willBlock) {
+        badge.classList.remove('d-none');
+      } else {
+        badge.classList.add('d-none');
+      }
+    });
+
+    // Insere logo após a linha do Known
+    targetRow.parentNode.insertBefore(newTr, targetRow.nextSibling);
+  }
+
+  function runEnhancements() {
     enhanceTable();
+    enhanceHostPage();
+  }
+
+  const observer = new MutationObserver(() => {
+    runEnhancements();
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
-  setInterval(enhanceTable, 1000);
+  setInterval(runEnhancements, 800);
 })();
