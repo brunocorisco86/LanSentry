@@ -1,0 +1,14 @@
+# Ambiente e segredos
+.env
+*.env.local
+
+# Dados persistentes dos containers
+data/
+data/*
+!data/.gitkeep
+sidecar/__pycache__/
+*.pyc
+
+# Logs
+*.log
+logs/

@@ -1,0 +1,56 @@
+services:
+  lansentry-postgres:
+    image: postgres:16-alpine
+    container_name: lansentry-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-lansentry}
+      POSTGRES_USER: ${POSTGRES_USER:-lansentry}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lansentry_pass_mude_aqui}
+      TZ: ${TZ:-America/Sao_Paulo}
+    ports:
+      # Exposto apenas em localhost para segurança, permitindo acesso do WYL em host-mode
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-lansentry} -d ${POSTGRES_DB:-lansentry}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  lansentry-wyl:
+    image: aceberg/watchyourlan:v2
+    container_name: lansentry-wyl
+    restart: unless-stopped
+    network_mode: "host"
+    environment:
+      TZ: ${TZ:-America/Sao_Paulo}
+      IFACES: ${IFACES:-eth0}
+      PORT: ${WYL_PORT:-8840}
+      USE_DB: "postgres"
+      PG_CONNECT: "postgres://${POSTGRES_USER:-lansentry}:${POSTGRES_PASSWORD:-lansentry_pass_mude_aqui}@127.0.0.1:5432/${POSTGRES_DB:-lansentry}?sslmode=disable"
+    volumes:
+      - ./data/wyl:/data/WatchYourLAN
+    depends_on:
+      lansentry-postgres:
+        condition: service_healthy
+
+  lansentry-sidecar:
+    build:
+      context: ./sidecar
+      dockerfile: Dockerfile
+    container_name: lansentry-sidecar
+    restart: unless-stopped
+    network_mode: "host"
+    environment:
+      TZ: ${TZ:-America/Sao_Paulo}
+      PG_CONNECT: "postgres://${POSTGRES_USER:-lansentry}:${POSTGRES_PASSWORD:-lansentry_pass_mude_aqui}@127.0.0.1:5432/${POSTGRES_DB:-lansentry}?sslmode=disable"
+      PIHOLE_GRAVITY_DB: "/etc/pihole/gravity.db"
+      CHECK_INTERVAL_SECONDS: ${CHECK_INTERVAL_SECONDS:-60}
+    volumes:
+      # Monta o banco SQLite de gravidade do Pi-hole para bloqueio de clientes
+      - ${PIHOLE_GRAVITY_DB:-/etc/pihole/gravity.db}:/etc/pihole/gravity.db
+    depends_on:
+      lansentry-postgres:
+        condition: service_healthy
