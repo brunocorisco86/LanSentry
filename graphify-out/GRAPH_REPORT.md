@@ -4,12 +4,12 @@
 - cluster-only mode — file stats not available
 
 ## Summary
-- 47 nodes · 79 edges · 12 communities (7 shown, 5 thin omitted)
+- 51 nodes · 90 edges · 12 communities (7 shown, 5 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 1 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `fedccae5`
+- Built from commit: `204a9ec2`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -20,24 +20,24 @@
 - auto_classify_devices
 - enrich_devices
 - get_pg_connection
-- reload_pihole_lists
+- sync_blocks
 - backup_lansentry.sh
 - lookup_mac_vendor_api
 - suggest_device_name
+- set_pihole_device_group
 - sync_names_to_pihole_ftl
-- sync_blocks
 
 ## God Nodes (most connected - your core abstractions)
 1. `main()` - 8 edges
-2. `enrich_devices()` - 7 edges
-3. `get_pg_connection()` - 7 edges
-4. `handle_block_toggle()` - 7 edges
-5. `sync_blocks()` - 6 edges
+2. `enhanceTable()` - 7 edges
+3. `enrich_devices()` - 7 edges
+4. `get_pg_connection()` - 7 edges
+5. `handle_block_toggle()` - 7 edges
 6. `auto_classify_devices()` - 6 edges
-7. `LanSentryProxyHandler` - 5 edges
-8. `enhanceTable()` - 5 edges
-9. `reload_pihole_lists()` - 5 edges
-10. `set_pihole_device_group()` - 5 edges
+7. `sync_blocks()` - 6 edges
+8. `LanSentryProxyHandler` - 5 edges
+9. `applyFilters()` - 5 edges
+10. `toggleBlock()` - 5 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `main()` --calls--> `auto_classify_devices()`  [EXTRACTED]
@@ -45,11 +45,11 @@
 - `main()` --calls--> `enrich_devices()`  [EXTRACTED]
   sidecar/sidecar.py → sidecar/sidecar.py  _Bridges community 1 → community 4_
 - `main()` --calls--> `sync_blocks()`  [EXTRACTED]
-  sidecar/sidecar.py → sidecar/sidecar.py  _Bridges community 1 → community 11_
+  sidecar/sidecar.py → sidecar/sidecar.py  _Bridges community 1 → community 6_
 - `main()` --calls--> `sync_names_to_pihole_ftl()`  [EXTRACTED]
-  sidecar/sidecar.py → sidecar/sidecar.py  _Bridges community 1 → community 10_
-- `sync_names_to_pihole_ftl()` --calls--> `get_pg_connection()`  [EXTRACTED]
-  sidecar/sidecar.py → sidecar/sidecar.py  _Bridges community 10 → community 5_
+  sidecar/sidecar.py → sidecar/sidecar.py  _Bridges community 1 → community 11_
+- `auto_classify_devices()` --calls--> `set_pihole_device_group()`  [EXTRACTED]
+  sidecar/sidecar.py → sidecar/sidecar.py  _Bridges community 10 → community 3_
 
 ## Import Cycles
 - None detected.
@@ -57,8 +57,8 @@
 ## Communities (12 total, 5 thin omitted)
 
 ### Community 0 - "custom.js"
-Cohesion: 0.54
-Nodes (7): enhanceHostPage(), enhanceTable(), getGroupBadge(), getHostIdFromRow(), loadData(), runEnhancements(), toggleBlock()
+Cohesion: 0.39
+Nodes (11): applyFilters(), enhanceFilterBar(), enhanceHostPage(), enhanceTable(), getGroupBadge(), getHostIdFromRow(), loadData(), runEnhancements() (+3 more)
 
 ### Community 1 - "sidecar.py"
 Cohesion: 0.43
@@ -80,9 +80,9 @@ Nodes (4): enrich_devices(), lookup_reverse_dns(), Consulta PTR no servidor DNS 
 Cohesion: 0.67
 Nodes (3): get_pg_connection(), handle_block_toggle(), Atualiza o nome no banco com ou sem a tag [BLOCK], roda sync_blocks…
 
-### Community 6 - "reload_pihole_lists"
+### Community 6 - "sync_blocks"
 Cohesion: 0.50
-Nodes (4): Define ou altera o grupo de um dispositivo no Pi-hole por MAC ou IP., Envia sinal RTMIN para o pihole-FTL recarregar as listas e grupos…, reload_pihole_lists(), set_pihole_device_group()
+Nodes (4): Lê os dispositivos do Postgres e sincroniza bloqueios deliberados com o Pi-hole., Envia sinal RTMIN para o pihole-FTL recarregar as listas e grupos…, reload_pihole_lists(), sync_blocks()
 
 ## Knowledge Gaps
 - **1 isolated node(s):** `backup_lansentry.sh script`
@@ -93,10 +93,10 @@ Nodes (4): Define ou altera o grupo de um dispositivo no Pi-hole por MAC ou IP.,
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `LanSentryProxyHandler` connect `LanSentryProxyHandler` to `sidecar.py`, `get_pg_connection`?**
-  _High betweenness centrality (0.080) - this node is a cross-community bridge._
+  _High betweenness centrality (0.068) - this node is a cross-community bridge._
 - **Why does `enrich_devices()` connect `enrich_devices` to `lookup_mac_vendor_api`, `sidecar.py`, `get_pg_connection`, `suggest_device_name`?**
-  _High betweenness centrality (0.047) - this node is a cross-community bridge._
-- **Why does `handle_block_toggle()` connect `get_pg_connection` to `sync_blocks`, `sidecar.py`, `auto_classify_devices`, `reload_pihole_lists`?**
-  _High betweenness centrality (0.046) - this node is a cross-community bridge._
+  _High betweenness centrality (0.040) - this node is a cross-community bridge._
+- **Why does `handle_block_toggle()` connect `get_pg_connection` to `sidecar.py`, `auto_classify_devices`, `sync_blocks`?**
+  _High betweenness centrality (0.039) - this node is a cross-community bridge._
 - **What connects `backup_lansentry.sh script` to the rest of the system?**
   _1 weakly-connected nodes found - possible documentation gaps or missing edges._

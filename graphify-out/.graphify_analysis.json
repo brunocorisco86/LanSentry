@@ -2,13 +2,17 @@
   "communities": {
     "0": [
       "sidecar_custom",
+      "sidecar_custom_applyfilters",
+      "sidecar_custom_enhancefilterbar",
       "sidecar_custom_enhancehostpage",
       "sidecar_custom_enhancetable",
       "sidecar_custom_getgroupbadge",
       "sidecar_custom_gethostidfromrow",
       "sidecar_custom_loaddata",
       "sidecar_custom_runenhancements",
-      "sidecar_custom_toggleblock"
+      "sidecar_custom_sorttable",
+      "sidecar_custom_toggleblock",
+      "sidecar_custom_updatesorticons"
     ],
     "1": [
       "sidecar_sidecar",
@@ -46,10 +50,10 @@
       "sidecar_sidecar_rationale_622"
     ],
     "6": [
-      "sidecar_sidecar_rationale_312",
+      "sidecar_sidecar_rationale_555",
       "sidecar_sidecar_rationale_58",
       "sidecar_sidecar_reload_pihole_lists",
-      "sidecar_sidecar_set_pihole_device_group"
+      "sidecar_sidecar_sync_blocks"
     ],
     "7": [
       "scripts_backup_lansentry",
@@ -64,16 +68,16 @@
       "sidecar_sidecar_suggest_device_name"
     ],
     "10": [
-      "sidecar_sidecar_rationale_377",
-      "sidecar_sidecar_sync_names_to_pihole_ftl"
+      "sidecar_sidecar_rationale_312",
+      "sidecar_sidecar_set_pihole_device_group"
     ],
     "11": [
-      "sidecar_sidecar_rationale_555",
-      "sidecar_sidecar_sync_blocks"
+      "sidecar_sidecar_rationale_377",
+      "sidecar_sidecar_sync_names_to_pihole_ftl"
     ]
   },
   "cohesion": {
-    "0": 0.5357142857142857,
+    "0": 0.3939393939393939,
     "1": 0.42857142857142855,
     "2": 0.3333333333333333,
     "3": 0.5,
@@ -93,6 +97,11 @@
       "degree": 8
     },
     {
+      "id": "sidecar_custom_enhancetable",
+      "label": "enhanceTable()",
+      "degree": 7
+    },
+    {
       "id": "sidecar_sidecar_enrich_devices",
       "label": "enrich_devices()",
       "degree": 7
@@ -108,13 +117,13 @@
       "degree": 7
     },
     {
-      "id": "sidecar_sidecar_sync_blocks",
-      "label": "sync_blocks()",
+      "id": "sidecar_sidecar_auto_classify_devices",
+      "label": "auto_classify_devices()",
       "degree": 6
     },
     {
-      "id": "sidecar_sidecar_auto_classify_devices",
-      "label": "auto_classify_devices()",
+      "id": "sidecar_sidecar_sync_blocks",
+      "label": "sync_blocks()",
       "degree": 6
     },
     {
@@ -123,18 +132,13 @@
       "degree": 5
     },
     {
-      "id": "sidecar_custom_enhancetable",
-      "label": "enhanceTable()",
+      "id": "sidecar_custom_applyfilters",
+      "label": "applyFilters()",
       "degree": 5
     },
     {
-      "id": "sidecar_sidecar_reload_pihole_lists",
-      "label": "reload_pihole_lists()",
-      "degree": 5
-    },
-    {
-      "id": "sidecar_sidecar_set_pihole_device_group",
-      "label": "set_pihole_device_group()",
+      "id": "sidecar_custom_toggleblock",
+      "label": "toggleBlock()",
       "degree": 5
     }
   ],
@@ -170,7 +174,7 @@
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
-      "note": "Bridges community 1 → community 11"
+      "note": "Bridges community 1 → community 6"
     },
     {
       "source": "main()",
@@ -181,35 +185,35 @@
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
-      "note": "Bridges community 1 → community 10"
+      "note": "Bridges community 1 → community 11"
     },
     {
-      "source": "sync_names_to_pihole_ftl()",
-      "target": "get_pg_connection()",
+      "source": "auto_classify_devices()",
+      "target": "set_pihole_device_group()",
       "source_files": [
         "sidecar/sidecar.py",
         "sidecar/sidecar.py"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
-      "note": "Bridges community 10 → community 5"
+      "note": "Bridges community 10 → community 3"
     }
   ],
   "questions": [
     {
       "type": "bridge_node",
       "question": "Why does `LanSentryProxyHandler` connect `LanSentryProxyHandler` to `sidecar.py`, `get_pg_connection`?",
-      "why": "High betweenness centrality (0.080) - this node is a cross-community bridge."
+      "why": "High betweenness centrality (0.068) - this node is a cross-community bridge."
     },
     {
       "type": "bridge_node",
       "question": "Why does `enrich_devices()` connect `enrich_devices` to `lookup_mac_vendor_api`, `sidecar.py`, `get_pg_connection`, `suggest_device_name`?",
-      "why": "High betweenness centrality (0.047) - this node is a cross-community bridge."
+      "why": "High betweenness centrality (0.040) - this node is a cross-community bridge."
     },
     {
       "type": "bridge_node",
-      "question": "Why does `handle_block_toggle()` connect `get_pg_connection` to `sync_blocks`, `sidecar.py`, `auto_classify_devices`, `reload_pihole_lists`?",
-      "why": "High betweenness centrality (0.046) - this node is a cross-community bridge."
+      "question": "Why does `handle_block_toggle()` connect `get_pg_connection` to `sidecar.py`, `auto_classify_devices`, `sync_blocks`?",
+      "why": "High betweenness centrality (0.039) - this node is a cross-community bridge."
     },
     {
       "type": "isolated_nodes",

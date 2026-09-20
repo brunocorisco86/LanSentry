@@ -17,6 +17,30 @@
       "source_location": "L698"
     },
     {
+      "id": "sidecar_custom_applyfilters",
+      "label": "applyFilters()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "custom.js",
+      "file_type": "code",
+      "norm_label": "applyfilters()",
+      "source_file": "sidecar/custom.js",
+      "source_location": "L160"
+    },
+    {
+      "id": "sidecar_custom_enhancefilterbar",
+      "label": "enhanceFilterBar()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "custom.js",
+      "file_type": "code",
+      "norm_label": "enhancefilterbar()",
+      "source_file": "sidecar/custom.js",
+      "source_location": "L252"
+    },
+    {
       "id": "sidecar_custom_enhancehostpage",
       "label": "enhanceHostPage()",
       "_callable": true,
@@ -26,7 +50,7 @@
       "file_type": "code",
       "norm_label": "enhancehostpage()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L231"
+      "source_location": "L440"
     },
     {
       "id": "sidecar_custom_enhancetable",
@@ -38,7 +62,7 @@
       "file_type": "code",
       "norm_label": "enhancetable()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L137"
+      "source_location": "L334"
     },
     {
       "id": "sidecar_custom_getgroupbadge",
@@ -50,7 +74,7 @@
       "file_type": "code",
       "norm_label": "getgroupbadge()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L67"
+      "source_location": "L87"
     },
     {
       "id": "sidecar_custom_gethostidfromrow",
@@ -62,7 +86,7 @@
       "file_type": "code",
       "norm_label": "gethostidfromrow()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L89"
+      "source_location": "L109"
     },
     {
       "id": "sidecar_custom_loaddata",
@@ -74,7 +98,7 @@
       "file_type": "code",
       "norm_label": "loaddata()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L38"
+      "source_location": "L58"
     },
     {
       "id": "sidecar_custom_runenhancements",
@@ -86,7 +110,19 @@
       "file_type": "code",
       "norm_label": "runenhancements()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L349"
+      "source_location": "L558"
+    },
+    {
+      "id": "sidecar_custom_sorttable",
+      "label": "sortTable()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "custom.js",
+      "file_type": "code",
+      "norm_label": "sorttable()",
+      "source_file": "sidecar/custom.js",
+      "source_location": "L190"
     },
     {
       "id": "sidecar_custom_toggleblock",
@@ -98,7 +134,19 @@
       "file_type": "code",
       "norm_label": "toggleblock()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L98"
+      "source_location": "L118"
+    },
+    {
+      "id": "sidecar_custom_updatesorticons",
+      "label": "updateSortIcons()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "custom.js",
+      "file_type": "code",
+      "norm_label": "updatesorticons()",
+      "source_file": "sidecar/custom.js",
+      "source_location": "L224"
     },
     {
       "id": "sidecar_sidecar_get_pihole_client_groups",
@@ -149,28 +197,28 @@
       "source_location": "L830"
     },
     {
+      "id": "sidecar_sidecar_set_pihole_device_group",
+      "label": "set_pihole_device_group()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "set_pihole_device_group",
+      "file_type": "code",
+      "norm_label": "set_pihole_device_group()",
+      "source_file": "sidecar/sidecar.py",
+      "source_location": "L311"
+    },
+    {
       "id": "sidecar_sidecar_sync_names_to_pihole_ftl",
       "label": "sync_names_to_pihole_ftl()",
       "_callable": true,
       "_origin": "ast",
-      "community": 10,
+      "community": 11,
       "community_name": "sync_names_to_pihole_ftl",
       "file_type": "code",
       "norm_label": "sync_names_to_pihole_ftl()",
       "source_file": "sidecar/sidecar.py",
       "source_location": "L376"
-    },
-    {
-      "id": "sidecar_sidecar_sync_blocks",
-      "label": "sync_blocks()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "sync_blocks",
-      "file_type": "code",
-      "norm_label": "sync_blocks()",
-      "source_file": "sidecar/sidecar.py",
-      "source_location": "L554"
     },
     {
       "id": "sidecar_sidecar_get_pihole_groups",
@@ -298,23 +346,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 6,
-      "community_name": "reload_pihole_lists",
+      "community_name": "sync_blocks",
       "file_type": "code",
       "norm_label": "reload_pihole_lists()",
       "source_file": "sidecar/sidecar.py",
       "source_location": "L57"
     },
     {
-      "id": "sidecar_sidecar_set_pihole_device_group",
-      "label": "set_pihole_device_group()",
+      "id": "sidecar_sidecar_sync_blocks",
+      "label": "sync_blocks()",
       "_callable": true,
       "_origin": "ast",
       "community": 6,
-      "community_name": "reload_pihole_lists",
+      "community_name": "sync_blocks",
       "file_type": "code",
-      "norm_label": "set_pihole_device_group()",
+      "norm_label": "sync_blocks()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L311"
+      "source_location": "L554"
     },
     {
       "id": "sidecar_sidecar_lookup_mac_vendor_api",
@@ -385,26 +433,26 @@
       "source_location": "L267"
     },
     {
+      "id": "sidecar_sidecar_rationale_312",
+      "label": "Define ou altera o grupo de um dispositivo no Pi-hole por MAC ou IP.",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "set_pihole_device_group",
+      "file_type": "rationale",
+      "norm_label": "define ou altera o grupo de um dispositivo no pi-hole por mac ou ip.",
+      "source_file": "sidecar/sidecar.py",
+      "source_location": "L312"
+    },
+    {
       "id": "sidecar_sidecar_rationale_377",
       "label": "Sincroniza os nomes humanos enriquecidos do LanSentry para a tabela\u2026",
       "_origin": "ast",
-      "community": 10,
+      "community": 11,
       "community_name": "sync_names_to_pihole_ftl",
       "file_type": "rationale",
       "norm_label": "sincroniza os nomes humanos enriquecidos do lansentry para a tabela...",
       "source_file": "sidecar/sidecar.py",
       "source_location": "L377"
-    },
-    {
-      "id": "sidecar_sidecar_rationale_555",
-      "label": "L\u00ea os dispositivos do Postgres e sincroniza bloqueios deliberados com o Pi-hole.",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "sync_blocks",
-      "file_type": "rationale",
-      "norm_label": "le os dispositivos do postgres e sincroniza bloqueios deliberados com o pi-hole.",
-      "source_file": "sidecar/sidecar.py",
-      "source_location": "L555"
     },
     {
       "id": "basehttprequesthandler",
@@ -484,22 +532,22 @@
       "source_location": "L622"
     },
     {
-      "id": "sidecar_sidecar_rationale_312",
-      "label": "Define ou altera o grupo de um dispositivo no Pi-hole por MAC ou IP.",
+      "id": "sidecar_sidecar_rationale_555",
+      "label": "L\u00ea os dispositivos do Postgres e sincroniza bloqueios deliberados com o Pi-hole.",
       "_origin": "ast",
       "community": 6,
-      "community_name": "reload_pihole_lists",
+      "community_name": "sync_blocks",
       "file_type": "rationale",
-      "norm_label": "define ou altera o grupo de um dispositivo no pi-hole por mac ou ip.",
+      "norm_label": "le os dispositivos do postgres e sincroniza bloqueios deliberados com o pi-hole.",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L312"
+      "source_location": "L555"
     },
     {
       "id": "sidecar_sidecar_rationale_58",
       "label": "Envia sinal RTMIN para o pihole-FTL recarregar as listas e grupos\u2026",
       "_origin": "ast",
       "community": 6,
-      "community_name": "reload_pihole_lists",
+      "community_name": "sync_blocks",
       "file_type": "rationale",
       "norm_label": "envia sinal rtmin para o pihole-ftl recarregar as listas e grupos...",
       "source_file": "sidecar/sidecar.py",
@@ -560,6 +608,18 @@
   ],
   "links": [
     {
+      "source": "sidecar_custom_enhancefilterbar",
+      "target": "sidecar_custom_applyfilters",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "sidecar/custom.js",
+      "source_location": "L292",
+      "weight": 1.0
+    },
+    {
       "source": "sidecar_custom_enhancehostpage",
       "target": "sidecar_custom_loaddata",
       "relation": "calls",
@@ -568,7 +628,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L302",
+      "source_location": "L511",
       "weight": 1.0
     },
     {
@@ -580,7 +640,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L335",
+      "source_location": "L544",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom_enhancetable",
+      "target": "sidecar_custom_sorttable",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "sidecar/custom.js",
+      "source_location": "L346",
       "weight": 1.0
     },
     {
@@ -592,7 +664,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L164",
+      "source_location": "L367",
       "weight": 1.0
     },
     {
@@ -604,7 +676,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L197",
+      "source_location": "L404",
       "weight": 1.0
     },
     {
@@ -616,7 +688,31 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L217",
+      "source_location": "L424",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom_enhancetable",
+      "target": "sidecar_custom_applyfilters",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "sidecar/custom.js",
+      "source_location": "L436",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom_runenhancements",
+      "target": "sidecar_custom_enhancefilterbar",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "sidecar/custom.js",
+      "source_location": "L562",
       "weight": 1.0
     },
     {
@@ -628,7 +724,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L353",
+      "source_location": "L563",
       "weight": 1.0
     },
     {
@@ -640,7 +736,31 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L354",
+      "source_location": "L564",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom_sorttable",
+      "target": "sidecar_custom_updatesorticons",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "sidecar/custom.js",
+      "source_location": "L220",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom_sorttable",
+      "target": "sidecar_custom_applyfilters",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "sidecar/custom.js",
+      "source_location": "L221",
       "weight": 1.0
     },
     {
@@ -652,7 +772,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L123",
+      "source_location": "L145",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom_toggleblock",
+      "target": "sidecar_custom_applyfilters",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "sidecar/custom.js",
+      "source_location": "L146",
       "weight": 1.0
     },
     {
@@ -980,68 +1112,13 @@
     },
     {
       "source": "sidecar_custom",
-      "target": "sidecar_custom_enhancetable",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "sidecar/custom.js",
-      "source_location": "L137",
-      "weight": 1.0
-    },
-    {
-      "source": "sidecar_custom",
-      "target": "sidecar_custom_enhancehostpage",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "sidecar/custom.js",
-      "source_location": "L231",
-      "weight": 1.0
-    },
-    {
-      "source": "sidecar_custom",
-      "target": "sidecar_custom_runenhancements",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "sidecar/custom.js",
-      "source_location": "L349",
-      "weight": 1.0
-    },
-    {
-      "source": "sidecar_custom",
-      "target": "sidecar_custom_loaddata",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "sidecar/custom.js",
-      "source_location": "L38",
-      "weight": 1.0
-    },
-    {
-      "source": "sidecar_custom",
-      "target": "sidecar_custom_getgroupbadge",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "sidecar/custom.js",
-      "source_location": "L67",
-      "weight": 1.0
-    },
-    {
-      "source": "sidecar_custom",
       "target": "sidecar_custom_gethostidfromrow",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/custom.js",
-      "source_location": "L89",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
@@ -1052,7 +1129,106 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/custom.js",
-      "source_location": "L98",
+      "source_location": "L118",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom",
+      "target": "sidecar_custom_applyfilters",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sidecar/custom.js",
+      "source_location": "L160",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom",
+      "target": "sidecar_custom_sorttable",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sidecar/custom.js",
+      "source_location": "L190",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom",
+      "target": "sidecar_custom_updatesorticons",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sidecar/custom.js",
+      "source_location": "L224",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom",
+      "target": "sidecar_custom_enhancefilterbar",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sidecar/custom.js",
+      "source_location": "L252",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom",
+      "target": "sidecar_custom_enhancetable",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sidecar/custom.js",
+      "source_location": "L334",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom",
+      "target": "sidecar_custom_enhancehostpage",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sidecar/custom.js",
+      "source_location": "L440",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom",
+      "target": "sidecar_custom_runenhancements",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sidecar/custom.js",
+      "source_location": "L558",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom",
+      "target": "sidecar_custom_loaddata",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sidecar/custom.js",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom",
+      "target": "sidecar_custom_getgroupbadge",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sidecar/custom.js",
+      "source_location": "L87",
       "weight": 1.0
     },
     {
@@ -1465,5 +1641,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "fedccae54153c0616040bf942392e7aadd03e3bf"
+  "built_at_commit": "204a9ec2f9f0693a1d7ec4f9da73868a0427440c"
 }

@@ -1,8 +1,9 @@
 // LanSentry UI Enhancement
-// Injeta dinamicamente a coluna de Grupo do Pi-hole e Toggle de Bloqueio com proteção contra loops de mutação
+// Injeta dinamicamente a coluna de Grupo do Pi-hole e Toggle de Bloqueio,
+// com filtros na barra superior (input-group) e ordenação interativa (sorting) adotando o padrão nativo do WatchYourLAN.
 
 (function() {
-  console.log("🛡️ LanSentry UI Enhancement ativo!");
+  console.log("🛡️ LanSentry UI Enhancement ativo (com Classificação e Filtros)!");
 
   // Injeta estilos CSS uma única vez
   if (!document.getElementById('lansentry-styles')) {
@@ -26,6 +27,21 @@
         letter-spacing: 0.02em;
         white-space: nowrap;
       }
+      .lansentry-sort-th {
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+      }
+      .lansentry-sort-th:hover {
+        color: var(--bs-primary);
+      }
+      .lansentry-sort-icon {
+        font-size: 0.85rem;
+        vertical-align: middle;
+      }
+      .lansentry-filter-select {
+        max-width: 170px;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -34,6 +50,10 @@
   let deviceMap = {};
   let isFetching = false;
   let isEnhancing = false;
+
+  // Estado dos filtros e ordenação
+  let currentSort = { field: null, direction: 'asc' };
+  let currentFilter = { group: 'ALL', block: 'ALL' };
 
   async function loadData() {
     if (isFetching) return;
@@ -106,8 +126,10 @@
         if (tr) {
           if (willBlock) {
             tr.classList.add('lansentry-blocked-row');
+            tr.dataset.lansentryBlocked = '1';
           } else {
             tr.classList.remove('lansentry-blocked-row');
+            tr.dataset.lansentryBlocked = '0';
           }
         }
         if (nameInput) {
@@ -121,6 +143,7 @@
           }
         }
         await loadData();
+        applyFilters();
       } else {
         alert("Falha ao atualizar bloqueio: " + (data.error || "erro desconhecido"));
         checkbox.checked = !willBlock;
@@ -133,26 +156,206 @@
     }
   }
 
-  // 1. Injeta colunas de Grupo Pi-hole e Bloqueio na tabela principal
+  // Aplica os filtros ativos (Grupo e Bloqueio) nas linhas da tabela
+  function applyFilters() {
+    const rows = document.querySelectorAll('table tbody tr');
+    rows.forEach(tr => {
+      // Ignora se for a tabela da tela de detalhes (/host/:id)
+      if (tr.children[0] && tr.children[0].textContent.trim() === 'ID') return;
+
+      const groupName = tr.dataset.lansentryGroup || 'Default';
+      const isBlocked = tr.dataset.lansentryBlocked === '1';
+
+      let matchGroup = true;
+      if (currentFilter.group && currentFilter.group !== 'ALL') {
+        matchGroup = (groupName === currentFilter.group);
+      }
+
+      let matchBlock = true;
+      if (currentFilter.block === '1') {
+        matchBlock = isBlocked;
+      } else if (currentFilter.block === '0') {
+        matchBlock = !isBlocked;
+      }
+
+      if (matchGroup && matchBlock) {
+        tr.style.display = '';
+      } else {
+        tr.style.display = 'none';
+      }
+    });
+  }
+
+  // Ordena a tabela por Grupo Pi-hole ou Bloqueio
+  function sortTable(field) {
+    const tbody = document.querySelector('table tbody');
+    if (!tbody) return;
+
+    if (currentSort.field === field) {
+      currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+    } else {
+      currentSort.field = field;
+      // Para bloqueio, o default mais intuitivo no primeiro clique é exibir os bloqueados no topo (desc)
+      currentSort.direction = (field === 'block') ? 'desc' : 'asc';
+    }
+
+    const rows = Array.from(tbody.querySelectorAll('tr')).filter(tr => {
+      return !(tr.children[0] && tr.children[0].textContent.trim() === 'ID');
+    });
+
+    rows.sort((a, b) => {
+      if (field === 'group') {
+        const gA = (a.dataset.lansentryGroup || 'Default').toLowerCase();
+        const gB = (b.dataset.lansentryGroup || 'Default').toLowerCase();
+        return currentSort.direction === 'asc' ? gA.localeCompare(gB) : gB.localeCompare(gA);
+      } else if (field === 'block') {
+        const bA = a.dataset.lansentryBlocked === '1' ? 1 : 0;
+        const bB = b.dataset.lansentryBlocked === '1' ? 1 : 0;
+        return currentSort.direction === 'desc' ? (bB - bA) : (bA - bB);
+      }
+      return 0;
+    });
+
+    rows.forEach(r => tbody.appendChild(r));
+    updateSortIcons();
+    applyFilters();
+  }
+
+  function updateSortIcons() {
+    const thGroup = document.querySelector('.lansentry-th-group');
+    const thBlock = document.querySelector('.lansentry-th-block');
+
+    if (thGroup) {
+      const icon = thGroup.querySelector('.lansentry-sort-icon');
+      if (icon) {
+        if (currentSort.field === 'group') {
+          icon.className = `bi ${currentSort.direction === 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up-alt'} my-btn ms-1 lansentry-sort-icon text-primary`;
+        } else {
+          icon.className = 'bi bi-sort-down-alt my-btn ms-1 lansentry-sort-icon text-secondary opacity-50';
+        }
+      }
+    }
+
+    if (thBlock) {
+      const icon = thBlock.querySelector('.lansentry-sort-icon');
+      if (icon) {
+        if (currentSort.field === 'block') {
+          icon.className = `bi ${currentSort.direction === 'desc' ? 'bi-sort-down' : 'bi-sort-up'} my-btn ms-1 lansentry-sort-icon text-danger`;
+        } else {
+          icon.className = 'bi bi-sort-down-alt my-btn ms-1 lansentry-sort-icon text-secondary opacity-50';
+        }
+      }
+    }
+  }
+
+  // 1. Injeta os selects de filtro no grupo de inputs nativo do WatchYourLAN
+  function enhanceFilterBar() {
+    const inputGroup = document.querySelector('.input-group');
+    if (!inputGroup) return;
+
+    const resetBtn = Array.from(inputGroup.querySelectorAll('button')).find(
+      btn => btn.textContent.includes('Reset filter') || btn.getAttribute('title') === 'Reset filter'
+    );
+    if (!resetBtn) return;
+
+    // Filtro Grupo Pi-hole
+    if (!inputGroup.querySelector('.lansentry-filter-group')) {
+      const selectGroup = document.createElement('select');
+      selectGroup.className = 'form-select lansentry-filter-select lansentry-filter-group';
+      selectGroup.title = 'Filter by Grupo Pi-hole';
+
+      const defaultGroups = [
+        "Infraestrutura",
+        "IoT & Smart Home",
+        "Assistentes & Streaming",
+        "Dispositivos Móveis",
+        "Workstations & PCs",
+        "Kids & Família",
+        "LANSENTRY_BLOCKED",
+        "Default"
+      ];
+
+      const groups = (piholeData && piholeData.groups && piholeData.groups.length > 0)
+        ? piholeData.groups.map(g => g.name)
+        : defaultGroups;
+
+      let options = `<option value="" disabled ${currentFilter.group === 'ALL' ? 'selected' : ''}>Grupo Pi-hole</option>`;
+      options += `<option value="ALL" ${currentFilter.group === 'ALL' ? 'selected' : ''}>Todos os Grupos</option>`;
+
+      groups.forEach(gName => {
+        options += `<option value="${gName}" ${currentFilter.group === gName ? 'selected' : ''}>${gName}</option>`;
+      });
+
+      selectGroup.innerHTML = options;
+      selectGroup.addEventListener('change', (e) => {
+        currentFilter.group = e.target.value;
+        applyFilters();
+      });
+
+      inputGroup.insertBefore(selectGroup, resetBtn);
+    }
+
+    // Filtro de Bloqueio
+    if (!inputGroup.querySelector('.lansentry-filter-block')) {
+      const selectBlock = document.createElement('select');
+      selectBlock.className = 'form-select lansentry-filter-select lansentry-filter-block';
+      selectBlock.title = 'Filter by Bloqueio';
+      selectBlock.innerHTML = `
+        <option value="" disabled ${currentFilter.block === 'ALL' ? 'selected' : ''}>Bloqueio</option>
+        <option value="ALL" ${currentFilter.block === 'ALL' ? 'selected' : ''}>Todos</option>
+        <option value="1" ${currentFilter.block === '1' ? 'selected' : ''}>🚫 Bloqueados</option>
+        <option value="0" ${currentFilter.block === '0' ? 'selected' : ''}>✅ Liberados</option>
+      `;
+
+      selectBlock.addEventListener('change', (e) => {
+        currentFilter.block = e.target.value;
+        applyFilters();
+      });
+
+      inputGroup.insertBefore(selectBlock, resetBtn);
+    }
+
+    // Vincula o botão nativo Reset filter para restaurar também os filtros do LanSentry
+    if (!resetBtn.dataset.lansentryHooked) {
+      resetBtn.dataset.lansentryHooked = 'true';
+      resetBtn.addEventListener('click', () => {
+        currentFilter.group = 'ALL';
+        currentFilter.block = 'ALL';
+        const selG = inputGroup.querySelector('.lansentry-filter-group');
+        if (selG) selG.value = 'ALL';
+        const selB = inputGroup.querySelector('.lansentry-filter-block');
+        if (selB) selB.value = 'ALL';
+        setTimeout(applyFilters, 100);
+      });
+    }
+  }
+
+  // 2. Injeta colunas de Grupo Pi-hole e Bloqueio na tabela principal
   function enhanceTable() {
     const thead = document.querySelector('table thead tr');
     if (!thead) return;
 
-    // Cabeçalho Grupo Pi-hole
-    if (!thead.querySelector('.lansentry-th-group')) {
-      const thGroup = document.createElement('th');
-      thGroup.className = 'lansentry-th-group';
-      thGroup.style.width = '12em';
-      thGroup.innerHTML = '<i class="bi bi-diagram-3-fill text-primary" title="Grupo atribuído no Pi-hole"></i> Grupo Pi-hole';
+    // Cabeçalho Grupo Pi-hole com ordenação
+    let thGroup = thead.querySelector('.lansentry-th-group');
+    if (!thGroup) {
+      thGroup = document.createElement('th');
+      thGroup.className = 'lansentry-th-group lansentry-sort-th';
+      thGroup.style.width = '13em';
+      thGroup.title = 'Clique para ordenar por Grupo Pi-hole';
+      thGroup.innerHTML = '<span>Grupo Pi-hole</span> <i class="bi bi-sort-down-alt my-btn ms-1 lansentry-sort-icon text-secondary opacity-50" title="Ordenar"></i>';
+      thGroup.addEventListener('click', () => sortTable('group'));
       thead.appendChild(thGroup);
     }
 
-    // Cabeçalho Bloqueio
-    if (!thead.querySelector('.lansentry-th-block')) {
-      const thBlock = document.createElement('th');
-      thBlock.className = 'lansentry-th-block';
-      thBlock.style.width = '6em';
-      thBlock.innerHTML = '<i class="bi bi-shield-slash-fill text-danger" title="Bloquear no Pi-hole"></i> Bloquear';
+    // Cabeçalho Bloqueio com ordenação
+    let thBlock = thead.querySelector('.lansentry-th-block');
+    if (!thBlock) {
+      thBlock = document.createElement('th');
+      thBlock.className = 'lansentry-th-block lansentry-sort-th';
+      thBlock.style.width = '7.5em';
+      thBlock.title = 'Clique para ordenar por Status de Bloqueio';
+      thBlock.innerHTML = '<span>Bloquear</span> <i class="bi bi-sort-down-alt my-btn ms-1 lansentry-sort-icon text-secondary opacity-50" title="Ordenar"></i>';
+      thBlock.addEventListener('click', () => sortTable('block'));
       thead.appendChild(thBlock);
     }
 
@@ -187,6 +390,10 @@
           groupName = clientInfo.primary_group_name || 'Default';
         }
       }
+
+      // Registra dados nas propriedades do elemento tr para ordenação e filtro instantâneos
+      tr.dataset.lansentryGroup = groupName;
+      tr.dataset.lansentryBlocked = isBlocked ? '1' : '0';
 
       // Atualiza ou insere td de Grupo Pi-hole
       let tdGroup = tr.querySelector('.lansentry-td-group');
@@ -225,9 +432,11 @@
         }
       }
     });
+
+    applyFilters();
   }
 
-  // 2. Injeta linha de grupo e bloqueio na tela de detalhes do host (/host/:id)
+  // 3. Injeta linha de grupo e bloqueio na tela de detalhes do host (/host/:id)
   function enhanceHostPage() {
     const rows = Array.from(document.querySelectorAll('table tbody tr'));
     const idRow = rows.find(r => r.children[0] && r.children[0].textContent.trim() === 'ID');
@@ -350,6 +559,7 @@
     if (isEnhancing) return;
     isEnhancing = true;
     try {
+      enhanceFilterBar();
       enhanceTable();
       enhanceHostPage();
     } catch (err) {
@@ -359,6 +569,6 @@
     }
   }
 
-  // Executa periodicamente a cada 1 segundo (leve e seguro, sem loops de mutação)
+  // Executa periodicamente a cada 1 segundo (leve, seguro e compatível com SPA)
   setInterval(runEnhancements, 1000);
 })();

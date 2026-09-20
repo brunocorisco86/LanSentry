@@ -6,10 +6,10 @@
     "semantic_hash": "2e5ddcb09808d1f937bfc6f4403129b4"
   },
   "sidecar/custom.js": {
-    "mtime": 1789855303.1377497,
-    "seen": 1789871915.0305138,
-    "ast_hash": "a0b47c91806ebeb986db106269585e97",
-    "semantic_hash": "a0b47c91806ebeb986db106269585e97"
+    "mtime": 1789872406.017789,
+    "seen": 1789872423.9938366,
+    "ast_hash": "acdf91bef900d87933edb9656bcee4d4",
+    "semantic_hash": "acdf91bef900d87933edb9656bcee4d4"
   },
   "sidecar/sidecar.py": {
     "mtime": 1789871521.8610475,
