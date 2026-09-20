@@ -225,6 +225,12 @@ def init_pihole_group():
                 (domain_id, group_id),
             )
 
+        # Remove do grupo 0 (Default) caso tenha sido associado pela trigger automática do Pi-hole
+        cursor.execute(
+            "DELETE FROM domainlist_by_group WHERE domainlist_id = ? AND group_id = 0",
+            (domain_id,),
+        )
+
         conn.commit()
         conn.close()
         return True
