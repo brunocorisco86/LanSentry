@@ -14,7 +14,7 @@
       "file_type": "code",
       "norm_label": "lansentryproxyhandler",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L692"
+      "source_location": "L698"
     },
     {
       "id": "sidecar_custom_enhancehostpage",
@@ -26,7 +26,7 @@
       "file_type": "code",
       "norm_label": "enhancehostpage()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L223"
+      "source_location": "L231"
     },
     {
       "id": "sidecar_custom_enhancetable",
@@ -38,7 +38,7 @@
       "file_type": "code",
       "norm_label": "enhancetable()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L134"
+      "source_location": "L137"
     },
     {
       "id": "sidecar_custom_getgroupbadge",
@@ -50,7 +50,7 @@
       "file_type": "code",
       "norm_label": "getgroupbadge()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L64"
+      "source_location": "L67"
     },
     {
       "id": "sidecar_custom_gethostidfromrow",
@@ -62,7 +62,7 @@
       "file_type": "code",
       "norm_label": "gethostidfromrow()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L86"
+      "source_location": "L89"
     },
     {
       "id": "sidecar_custom_loaddata",
@@ -74,7 +74,7 @@
       "file_type": "code",
       "norm_label": "loaddata()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L34"
+      "source_location": "L38"
     },
     {
       "id": "sidecar_custom_runenhancements",
@@ -86,7 +86,7 @@
       "file_type": "code",
       "norm_label": "runenhancements()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L341"
+      "source_location": "L349"
     },
     {
       "id": "sidecar_custom_toggleblock",
@@ -98,7 +98,7 @@
       "file_type": "code",
       "norm_label": "toggleblock()",
       "source_file": "sidecar/custom.js",
-      "source_location": "L95"
+      "source_location": "L98"
     },
     {
       "id": "sidecar_sidecar_get_pihole_client_groups",
@@ -110,7 +110,7 @@
       "file_type": "code",
       "norm_label": "get_pihole_client_groups()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L260"
+      "source_location": "L266"
     },
     {
       "id": "sidecar_sidecar_init_pihole_group",
@@ -134,7 +134,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L830"
+      "source_location": "L837"
     },
     {
       "id": "sidecar_sidecar_run_proxy",
@@ -146,7 +146,7 @@
       "file_type": "code",
       "norm_label": "run_proxy()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L823"
+      "source_location": "L830"
     },
     {
       "id": "sidecar_sidecar_sync_names_to_pihole_ftl",
@@ -158,7 +158,7 @@
       "file_type": "code",
       "norm_label": "sync_names_to_pihole_ftl()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L370"
+      "source_location": "L376"
     },
     {
       "id": "sidecar_sidecar_sync_blocks",
@@ -170,7 +170,7 @@
       "file_type": "code",
       "norm_label": "sync_blocks()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L548"
+      "source_location": "L554"
     },
     {
       "id": "sidecar_sidecar_get_pihole_groups",
@@ -182,7 +182,7 @@
       "file_type": "code",
       "norm_label": "get_pihole_groups()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L236"
+      "source_location": "L242"
     },
     {
       "id": "sidecar_sidecar_lansentryproxyhandler_do_get",
@@ -194,7 +194,7 @@
       "file_type": "code",
       "norm_label": ".do_get()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L696"
+      "source_location": "L702"
     },
     {
       "id": "sidecar_sidecar_lansentryproxyhandler_log_message",
@@ -206,7 +206,7 @@
       "file_type": "code",
       "norm_label": ".log_message()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L693"
+      "source_location": "L699"
     },
     {
       "id": "sidecar_sidecar_auto_classify_devices",
@@ -218,7 +218,7 @@
       "file_type": "code",
       "norm_label": "auto_classify_devices()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L421"
+      "source_location": "L427"
     },
     {
       "id": "sidecar_sidecar_send_ntfy_message",
@@ -242,7 +242,7 @@
       "file_type": "code",
       "norm_label": "enrich_devices()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L484"
+      "source_location": "L490"
     },
     {
       "id": "sidecar_sidecar_lookup_reverse_dns",
@@ -278,7 +278,7 @@
       "file_type": "code",
       "norm_label": "handle_block_toggle()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L615"
+      "source_location": "L621"
     },
     {
       "id": "sidecar_sidecar_lansentryproxyhandler_do_post",
@@ -290,7 +290,7 @@
       "file_type": "code",
       "norm_label": ".do_post()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L758"
+      "source_location": "L765"
     },
     {
       "id": "sidecar_sidecar_reload_pihole_lists",
@@ -314,7 +314,7 @@
       "file_type": "code",
       "norm_label": "set_pihole_device_group()",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L305"
+      "source_location": "L311"
     },
     {
       "id": "sidecar_sidecar_lookup_mac_vendor_api",
@@ -374,7 +374,7 @@
       "source_location": "L184"
     },
     {
-      "id": "sidecar_sidecar_rationale_261",
+      "id": "sidecar_sidecar_rationale_267",
       "label": "Retorna dicion\u00e1rio mapeando identificador (MAC ou IP em mai\u00fasculas) para seus\u2026",
       "_origin": "ast",
       "community": 1,
@@ -382,10 +382,10 @@
       "file_type": "rationale",
       "norm_label": "retorna dicionario mapeando identificador (mac ou ip em maiusculas) para seus...",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L261"
+      "source_location": "L267"
     },
     {
-      "id": "sidecar_sidecar_rationale_371",
+      "id": "sidecar_sidecar_rationale_377",
       "label": "Sincroniza os nomes humanos enriquecidos do LanSentry para a tabela\u2026",
       "_origin": "ast",
       "community": 10,
@@ -393,10 +393,10 @@
       "file_type": "rationale",
       "norm_label": "sincroniza os nomes humanos enriquecidos do lansentry para a tabela...",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L371"
+      "source_location": "L377"
     },
     {
-      "id": "sidecar_sidecar_rationale_549",
+      "id": "sidecar_sidecar_rationale_555",
       "label": "L\u00ea os dispositivos do Postgres e sincroniza bloqueios deliberados com o Pi-hole.",
       "_origin": "ast",
       "community": 11,
@@ -404,7 +404,7 @@
       "file_type": "rationale",
       "norm_label": "le os dispositivos do postgres e sincroniza bloqueios deliberados com o pi-hole.",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L549"
+      "source_location": "L555"
     },
     {
       "id": "basehttprequesthandler",
@@ -418,7 +418,7 @@
       "source_location": ""
     },
     {
-      "id": "sidecar_sidecar_rationale_237",
+      "id": "sidecar_sidecar_rationale_243",
       "label": "Retorna todos os grupos configurados no Pi-hole.",
       "_origin": "ast",
       "community": 2,
@@ -426,10 +426,10 @@
       "file_type": "rationale",
       "norm_label": "retorna todos os grupos configurados no pi-hole.",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L237"
+      "source_location": "L243"
     },
     {
-      "id": "sidecar_sidecar_rationale_422",
+      "id": "sidecar_sidecar_rationale_428",
       "label": "Classifica automaticamente dispositivos novos no grupo correto do Pi-hole com\u2026",
       "_origin": "ast",
       "community": 3,
@@ -437,7 +437,7 @@
       "file_type": "rationale",
       "norm_label": "classifica automaticamente dispositivos novos no grupo correto do pi-hole com...",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L422"
+      "source_location": "L428"
     },
     {
       "id": "sidecar_sidecar_rationale_70",
@@ -462,7 +462,7 @@
       "source_location": "L132"
     },
     {
-      "id": "sidecar_sidecar_rationale_485",
+      "id": "sidecar_sidecar_rationale_491",
       "label": "Percorre aparelhos no PostgreSQL e preenche HW e Name faltantes.",
       "_origin": "ast",
       "community": 4,
@@ -470,10 +470,10 @@
       "file_type": "rationale",
       "norm_label": "percorre aparelhos no postgresql e preenche hw e name faltantes.",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L485"
+      "source_location": "L491"
     },
     {
-      "id": "sidecar_sidecar_rationale_616",
+      "id": "sidecar_sidecar_rationale_622",
       "label": "Atualiza o nome no banco com ou sem a tag [BLOCK], roda sync_blocks\u2026",
       "_origin": "ast",
       "community": 5,
@@ -481,10 +481,10 @@
       "file_type": "rationale",
       "norm_label": "atualiza o nome no banco com ou sem a tag [block], roda sync_blocks...",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L616"
+      "source_location": "L622"
     },
     {
-      "id": "sidecar_sidecar_rationale_306",
+      "id": "sidecar_sidecar_rationale_312",
       "label": "Define ou altera o grupo de um dispositivo no Pi-hole por MAC ou IP.",
       "_origin": "ast",
       "community": 6,
@@ -492,7 +492,7 @@
       "file_type": "rationale",
       "norm_label": "define ou altera o grupo de um dispositivo no pi-hole por mac ou ip.",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L306"
+      "source_location": "L312"
     },
     {
       "id": "sidecar_sidecar_rationale_58",
@@ -568,7 +568,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L294",
+      "source_location": "L302",
       "weight": 1.0
     },
     {
@@ -580,7 +580,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L327",
+      "source_location": "L335",
       "weight": 1.0
     },
     {
@@ -592,7 +592,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L161",
+      "source_location": "L164",
       "weight": 1.0
     },
     {
@@ -604,7 +604,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L187",
+      "source_location": "L197",
       "weight": 1.0
     },
     {
@@ -616,7 +616,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L214",
+      "source_location": "L217",
       "weight": 1.0
     },
     {
@@ -628,7 +628,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L342",
+      "source_location": "L353",
       "weight": 1.0
     },
     {
@@ -640,7 +640,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L343",
+      "source_location": "L354",
       "weight": 1.0
     },
     {
@@ -652,7 +652,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/custom.js",
-      "source_location": "L120",
+      "source_location": "L123",
       "weight": 1.0
     },
     {
@@ -664,7 +664,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L425",
+      "source_location": "L431",
       "weight": 1.0
     },
     {
@@ -676,7 +676,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L466",
+      "source_location": "L472",
       "weight": 1.0
     },
     {
@@ -688,7 +688,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L469",
+      "source_location": "L475",
       "weight": 1.0
     },
     {
@@ -700,7 +700,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L488",
+      "source_location": "L494",
       "weight": 1.0
     },
     {
@@ -712,7 +712,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L514",
+      "source_location": "L520",
       "weight": 1.0
     },
     {
@@ -724,7 +724,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L520",
+      "source_location": "L526",
       "weight": 1.0
     },
     {
@@ -736,7 +736,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L526",
+      "source_location": "L532",
       "weight": 1.0
     },
     {
@@ -748,7 +748,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L619",
+      "source_location": "L625",
       "weight": 1.0
     },
     {
@@ -760,7 +760,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L660",
+      "source_location": "L666",
       "weight": 1.0
     },
     {
@@ -772,7 +772,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L664",
+      "source_location": "L670",
       "weight": 1.0
     },
     {
@@ -784,7 +784,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L667",
+      "source_location": "L673",
       "weight": 1.0
     },
     {
@@ -796,7 +796,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L716",
+      "source_location": "L722",
       "weight": 1.0
     },
     {
@@ -808,7 +808,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L717",
+      "source_location": "L723",
       "weight": 1.0
     },
     {
@@ -820,7 +820,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L767",
+      "source_location": "L774",
       "weight": 1.0
     },
     {
@@ -832,7 +832,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L785",
+      "source_location": "L792",
       "weight": 1.0
     },
     {
@@ -844,7 +844,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L790",
+      "source_location": "L797",
       "weight": 1.0
     },
     {
@@ -856,7 +856,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L835",
+      "source_location": "L842",
       "weight": 1.0
     },
     {
@@ -868,7 +868,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L843",
+      "source_location": "L850",
       "weight": 1.0
     },
     {
@@ -880,7 +880,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L844",
+      "source_location": "L851",
       "weight": 1.0
     },
     {
@@ -892,7 +892,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L845",
+      "source_location": "L852",
       "weight": 1.0
     },
     {
@@ -904,7 +904,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L848",
+      "source_location": "L855",
       "weight": 1.0
     },
     {
@@ -916,7 +916,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L849",
+      "source_location": "L856",
       "weight": 1.0
     },
     {
@@ -928,7 +928,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L362",
+      "source_location": "L368",
       "weight": 1.0
     },
     {
@@ -940,7 +940,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L552",
+      "source_location": "L558",
       "weight": 1.0
     },
     {
@@ -952,7 +952,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L606",
+      "source_location": "L612",
       "weight": 1.0
     },
     {
@@ -964,7 +964,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L377",
+      "source_location": "L383",
       "weight": 1.0
     },
     {
@@ -986,7 +986,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/custom.js",
-      "source_location": "L134",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -997,18 +997,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/custom.js",
-      "source_location": "L223",
-      "weight": 1.0
-    },
-    {
-      "source": "sidecar_custom",
-      "target": "sidecar_custom_loaddata",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "sidecar/custom.js",
-      "source_location": "L34",
+      "source_location": "L231",
       "weight": 1.0
     },
     {
@@ -1019,7 +1008,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/custom.js",
-      "source_location": "L341",
+      "source_location": "L349",
+      "weight": 1.0
+    },
+    {
+      "source": "sidecar_custom",
+      "target": "sidecar_custom_loaddata",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sidecar/custom.js",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -1030,7 +1030,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/custom.js",
-      "source_location": "L64",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -1041,7 +1041,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/custom.js",
-      "source_location": "L86",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -1052,7 +1052,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/custom.js",
-      "source_location": "L95",
+      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -1107,7 +1107,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L236",
+      "source_location": "L242",
       "weight": 1.0
     },
     {
@@ -1118,7 +1118,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L260",
+      "source_location": "L266",
       "weight": 1.0
     },
     {
@@ -1129,7 +1129,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L305",
+      "source_location": "L311",
       "weight": 1.0
     },
     {
@@ -1140,7 +1140,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L370",
+      "source_location": "L376",
       "weight": 1.0
     },
     {
@@ -1151,7 +1151,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L421",
+      "source_location": "L427",
       "weight": 1.0
     },
     {
@@ -1162,7 +1162,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L484",
+      "source_location": "L490",
       "weight": 1.0
     },
     {
@@ -1173,7 +1173,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L548",
+      "source_location": "L554",
       "weight": 1.0
     },
     {
@@ -1195,7 +1195,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L615",
+      "source_location": "L621",
       "weight": 1.0
     },
     {
@@ -1217,7 +1217,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L692",
+      "source_location": "L698",
       "weight": 1.0
     },
     {
@@ -1228,7 +1228,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L823",
+      "source_location": "L830",
       "weight": 1.0
     },
     {
@@ -1239,7 +1239,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L830",
+      "source_location": "L837",
       "weight": 1.0
     },
     {
@@ -1261,7 +1261,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L692",
+      "source_location": "L698",
       "weight": 1.0
     },
     {
@@ -1272,7 +1272,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L693",
+      "source_location": "L699",
       "weight": 1.0
     },
     {
@@ -1283,7 +1283,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L696",
+      "source_location": "L702",
       "weight": 1.0
     },
     {
@@ -1294,7 +1294,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L758",
+      "source_location": "L765",
       "weight": 1.0
     },
     {
@@ -1342,80 +1342,80 @@
       "weight": 1.0
     },
     {
-      "source": "sidecar_sidecar_rationale_237",
+      "source": "sidecar_sidecar_rationale_243",
       "target": "sidecar_sidecar_get_pihole_groups",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L237",
+      "source_location": "L243",
       "weight": 1.0
     },
     {
-      "source": "sidecar_sidecar_rationale_261",
+      "source": "sidecar_sidecar_rationale_267",
       "target": "sidecar_sidecar_get_pihole_client_groups",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L261",
+      "source_location": "L267",
       "weight": 1.0
     },
     {
-      "source": "sidecar_sidecar_rationale_306",
+      "source": "sidecar_sidecar_rationale_312",
       "target": "sidecar_sidecar_set_pihole_device_group",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L306",
+      "source_location": "L312",
       "weight": 1.0
     },
     {
-      "source": "sidecar_sidecar_rationale_371",
+      "source": "sidecar_sidecar_rationale_377",
       "target": "sidecar_sidecar_sync_names_to_pihole_ftl",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L371",
+      "source_location": "L377",
       "weight": 1.0
     },
     {
-      "source": "sidecar_sidecar_rationale_422",
+      "source": "sidecar_sidecar_rationale_428",
       "target": "sidecar_sidecar_auto_classify_devices",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L422",
+      "source_location": "L428",
       "weight": 1.0
     },
     {
-      "source": "sidecar_sidecar_rationale_485",
+      "source": "sidecar_sidecar_rationale_491",
       "target": "sidecar_sidecar_enrich_devices",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L485",
+      "source_location": "L491",
       "weight": 1.0
     },
     {
-      "source": "sidecar_sidecar_rationale_549",
+      "source": "sidecar_sidecar_rationale_555",
       "target": "sidecar_sidecar_sync_blocks",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L549",
+      "source_location": "L555",
       "weight": 1.0
     },
     {
@@ -1430,14 +1430,14 @@
       "weight": 1.0
     },
     {
-      "source": "sidecar_sidecar_rationale_616",
+      "source": "sidecar_sidecar_rationale_622",
       "target": "sidecar_sidecar_handle_block_toggle",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L616",
+      "source_location": "L622",
       "weight": 1.0
     },
     {
@@ -1460,10 +1460,10 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "sidecar/sidecar.py",
-      "source_location": "L838",
+      "source_location": "L845",
       "weight": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "ede5e70b26310428f2fa5bda06cbe8686da0ef8e"
+  "built_at_commit": "fedccae54153c0616040bf942392e7aadd03e3bf"
 }

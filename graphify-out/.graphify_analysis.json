@@ -16,7 +16,7 @@
       "sidecar_sidecar_init_pihole_group",
       "sidecar_sidecar_main",
       "sidecar_sidecar_rationale_184",
-      "sidecar_sidecar_rationale_261",
+      "sidecar_sidecar_rationale_267",
       "sidecar_sidecar_run_proxy"
     ],
     "2": [
@@ -25,11 +25,11 @@
       "sidecar_sidecar_lansentryproxyhandler",
       "sidecar_sidecar_lansentryproxyhandler_do_get",
       "sidecar_sidecar_lansentryproxyhandler_log_message",
-      "sidecar_sidecar_rationale_237"
+      "sidecar_sidecar_rationale_243"
     ],
     "3": [
       "sidecar_sidecar_auto_classify_devices",
-      "sidecar_sidecar_rationale_422",
+      "sidecar_sidecar_rationale_428",
       "sidecar_sidecar_rationale_70",
       "sidecar_sidecar_send_ntfy_message"
     ],
@@ -37,16 +37,16 @@
       "sidecar_sidecar_enrich_devices",
       "sidecar_sidecar_lookup_reverse_dns",
       "sidecar_sidecar_rationale_132",
-      "sidecar_sidecar_rationale_485"
+      "sidecar_sidecar_rationale_491"
     ],
     "5": [
       "sidecar_sidecar_get_pg_connection",
       "sidecar_sidecar_handle_block_toggle",
       "sidecar_sidecar_lansentryproxyhandler_do_post",
-      "sidecar_sidecar_rationale_616"
+      "sidecar_sidecar_rationale_622"
     ],
     "6": [
-      "sidecar_sidecar_rationale_306",
+      "sidecar_sidecar_rationale_312",
       "sidecar_sidecar_rationale_58",
       "sidecar_sidecar_reload_pihole_lists",
       "sidecar_sidecar_set_pihole_device_group"
@@ -64,11 +64,11 @@
       "sidecar_sidecar_suggest_device_name"
     ],
     "10": [
-      "sidecar_sidecar_rationale_371",
+      "sidecar_sidecar_rationale_377",
       "sidecar_sidecar_sync_names_to_pihole_ftl"
     ],
     "11": [
-      "sidecar_sidecar_rationale_549",
+      "sidecar_sidecar_rationale_555",
       "sidecar_sidecar_sync_blocks"
     ]
   },
