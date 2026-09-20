@@ -11,6 +11,7 @@ services:
       USE_DB: "postgres"
       PG_CONNECT: "postgres://${POSTGRES_USER:-lansentry}:${POSTGRES_PASSWORD:-lansentry_secure_prod_pi}@127.0.0.1:5432/${POSTGRES_DB:-lansentry}?sslmode=disable"
       SHOUTRRR_URL: ${SHOUTRRR_URL:-ntfy://ntfy.sh/bruno-casa-dallas}
+    entrypoint: ["/bin/sh", "-c", "while ! nc -z 127.0.0.1 5432; do echo 'Aguardando PostgreSQL em 127.0.0.1:5432...'; sleep 1; done; echo 'PostgreSQL pronto, iniciando WatchYourLAN...'; exec ./WatchYourLAN"]
     volumes:
       - ./data/wyl:/data/WatchYourLAN
 
